@@ -70,7 +70,7 @@ public class ControladorProducto {
         producto.setFoto(byteOperation.compressBytes(file.getBytes()));
         return productoRepositorio.save(producto);
     }
-    @GetMapping("/nombre/{nombre}")
+    @GetMapping("/nombre/{nombre}/{actual}/{cantidadmaxima}")
     public List<HashMap<String,Object>> getByNombre(@PathVariable(value = "nombre")String nombre){
         List<Object[]> productos=productoRepositorio.findByNombre(nombre);
         List<HashMap<String,Object>> respuesta=new ArrayList<>();
@@ -97,6 +97,7 @@ public class ControladorProducto {
     public List<HashMap<String,Object>> getByCategoria(@PathVariable(value = "categoria")int categoria){
         List<Object[]> productos=productoRepositorio.findByCategoria(categoria);
         List<HashMap<String,Object>> respuesta=new ArrayList<>();
+
         for (Object[] producto : productos) {
             HashMap<String, Object> mapa = new HashMap<>();
             Object[] objects = producto;

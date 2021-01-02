@@ -159,7 +159,7 @@ public class ControladorEmpresa {
                 Object[] objects=em.get(i);
                 mapa.put("id_empresa",objects[0]);
                 mapa.put("nombre",objects[1]);
-                mapa.put("foto",byteOperation.decompressBytes((byte[])objects[2]));
+                //mapa.put("foto",byteOperation.decompressBytes((byte[])objects[2]));
                 mapa.put("latitud",(double)objects[3]);
                 mapa.put("longitud",(double)objects[4]);
                 respuesta.add(mapa);
