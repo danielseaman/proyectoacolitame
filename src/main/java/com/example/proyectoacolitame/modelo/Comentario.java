@@ -9,11 +9,11 @@ public class Comentario {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_comentario")
-    public int idComentario;
+    private int idComentario;
     @Column(name = "fecha")
-    public String fecha;
+    private String fecha;
     @Column(name = "contenido")
-    public String contenido;
+    private String contenido;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)

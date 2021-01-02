@@ -12,15 +12,15 @@ public class Producto {
     @Id
     @Column(name = "id_producto")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public int idProducto;
+    private int idProducto;
     @Column(name = "nombre")
-    public String nombre;
+    private String nombre;
     @Column(name = "descripcion")
-    public String descripcion;
+    private String descripcion;
     @Column(name = "precio")
-    public double precio;
+    private double precio;
     @Column(name = "bytes_foto")
-    public byte[] foto;
+    private byte[] foto;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_empresa")
     @JsonBackReference

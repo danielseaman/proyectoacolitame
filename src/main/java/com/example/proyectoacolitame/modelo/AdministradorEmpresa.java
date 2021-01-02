@@ -12,13 +12,13 @@ public class AdministradorEmpresa {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id_administrador")
-    public int idAdministrador;
+    private int idAdministrador;
     @Column(name = "correo")
-    public String correo;
+    private String correo;
     @Column(name ="clave")
-    public String clave;
+    private String clave;
     @Column(name = "verificado")
-    public boolean verificado;
+    private boolean verificado;
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "id_empresa")
     @JsonBackReference

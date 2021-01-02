@@ -12,28 +12,28 @@ public class Empresa {
     @Column(name = "id_empresa")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public int idEmpresa;
+    private int idEmpresa;
     @Column(name = "nombre")
-    public String nombre;
+    private String nombre;
     @Column(name = "direccion")
-    public String direccion;
+    private String direccion;
     @Column(name = "telefono")
-    public String telefono;//varios
+    private String telefono;//varios
     @Column(name = "correo")
-    public String correo;
+    private String correo;
     //categoria
     @Column(name = "latitud")
-    public double latitud;
+    private double latitud;
     @Column(name = "longitud")
-    public double longitud;
+    private double longitud;
     @Column(name = "bytes_foto")
-    public byte[] foto;
+    private byte[] foto;
     @Column (name = "facebook")
-    public String facebook;
+    private String facebook;
     @Column(name="twitter")
-    public String twitter;
+    private String twitter;
     @Column(name = "instagram")
-    public String instagram;
+    private String instagram;
 
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference

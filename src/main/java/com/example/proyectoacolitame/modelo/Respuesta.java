@@ -10,15 +10,15 @@ public class Respuesta {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_respuesta")
-    public int idRespuesta;
+    private int idRespuesta;
     @Column(name = "fecha")
-    public String fecha;
+    private String fecha;
     @Column(name = "contenido")
-    public String contenido;
+    private String contenido;
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "id_comentario")
     @JsonBackReference
-    public Comentario comentario;
+    private Comentario comentario;
     @JsonBackReference
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "id_empresa")

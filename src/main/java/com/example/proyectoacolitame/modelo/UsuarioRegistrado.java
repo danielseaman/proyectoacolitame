@@ -12,22 +12,22 @@ public class UsuarioRegistrado {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_usuario")
-    public int idUsuario;
+    private int idUsuario;
     @Column(name = "clave")
-    public String clave;
+    private String clave;
     @Column(name = "correo")
-    public String correo;
+    private String correo;
     @Column(name = "telefono")
-    public String telefono;
+    private String telefono;
     @Column(name = "nombre")
-    public String nombre;
+    private String nombre;
 
     @Column(name = "verificado")
-    public boolean verificado;
+    private boolean verificado;
 
 
     @Column(name = "bytes_foto")
-    public byte[] foto;
+    private byte[] foto;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "usuarioRegistrado", cascade = CascadeType.ALL, orphanRemoval = true)
