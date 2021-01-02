@@ -123,7 +123,32 @@ public class ControladorEmpresa {
         }
         //manejar excepcion
     }
-
+    @GetMapping("/id/{correo}")
+    public HashMap<String,Object> getEmpresaById(@PathVariable(value = "correo")int correo){
+        Empresa em = empresaRepositorio.findById(correo);
+        if(em!=null){
+            em.setFoto(byteOperation.decompressBytes(em.getFoto()));
+            HashMap<String,Object> mapa=new HashMap<>();
+            mapa.put("id_empresa",em.getIdEmpresa());
+            mapa.put("nombre",em.getNombre());
+            mapa.put("direccion",em.getDireccion());
+            mapa.put("telefono",em.getTelefono());
+            mapa.put("correo",em.getCorreo());
+            mapa.put("latitud",em.getLatitud());
+            mapa.put("longitud",em.getLongitud());
+            mapa.put("foto",em.getFoto());
+            mapa.put("facebook",em.getFacebook());
+            mapa.put("twitter",em.getTwitter());
+            mapa.put("instagram",em.getInstagram());
+            mapa.put("categoria",em.getCategoria().getNombre());
+            mapa.put("productos",em.getProductos());
+            mapa.put("comentarios",em.getComentarios());
+            return mapa;
+        }else{
+            throw new DataNotFoundException();
+        }
+        //manejar excepcion
+    }
     @GetMapping("/nombre/{nombre}")
     public List<HashMap<String,Object>> getEmpresaByNombre(@PathVariable(value = "nombre")String nombre){
         List<Object[]> em = empresaRepositorio.findByNombre(nombre);
@@ -172,7 +197,7 @@ public class ControladorEmpresa {
     }
 
     @GetMapping("/categoria/{categoria}/{actual}/{cantidadmaxima}")
-    public List<HashMap<String,Object>> getEmpresaCategoria(@PathVariable(value = "categoria")int categoria,@PathVariable(value = "actual")int actual,@PathVariable(value = "cantidadmaxima")int cantidadmaxima){
+    public List<HashMap<String,Object>> getEmpresaCategoria(@PathVariable(value = "categoria")int categoria,@PathVariable(value = "actual")int actual,@PathVariable(value = "cantidadmaxima")int cantidadmaxima) throws DataNotFoundException{
         List<Object[]> empresas = empresaRepositorio.findByCategoria(categoria);
         List<HashMap<String,Object>> respuestas=new ArrayList<>();
         if(cantidadmaxima>empresas.size()){
