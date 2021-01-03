@@ -70,7 +70,7 @@ public class ControladorProducto {
         producto.setFoto(byteOperation.compressBytes(file.getBytes()));
         return productoRepositorio.save(producto);
     }
-    @GetMapping("/nombre/{nombre}/{actual}/{cantidadmaxima}")
+    @GetMapping("/nombre/{nombre}")
     public List<HashMap<String,Object>> getByNombre(@PathVariable(value = "nombre")String nombre){
         List<Object[]> productos=productoRepositorio.findByNombre(nombre);
         List<HashMap<String,Object>> respuesta=new ArrayList<>();
@@ -93,14 +93,16 @@ public class ControladorProducto {
             throw new DataNotFoundException();
         }
     }
-    @GetMapping("/categoria/{categoria}")
-    public List<HashMap<String,Object>> getByCategoria(@PathVariable(value = "categoria")int categoria){
+    @GetMapping("/categoria/{categoria}/{actual}/{cantidadmaxima}")
+    public List<HashMap<String,Object>> getByCategoria(@PathVariable(value = "categoria")int categoria,@PathVariable(value = "actual")int actual,@PathVariable(value = "cantidadmaxima")int cantidadmaxima){
         List<Object[]> productos=productoRepositorio.findByCategoria(categoria);
         List<HashMap<String,Object>> respuesta=new ArrayList<>();
-
-        for (Object[] producto : productos) {
+        if(cantidadmaxima>productos.size()){
+            cantidadmaxima=productos.size();
+        }
+        for (int i=actual;i<cantidadmaxima;i++) {
             HashMap<String, Object> mapa = new HashMap<>();
-            Object[] objects = producto;
+            Object[] objects = productos.get(i);
             mapa.put("id_producto", objects[0]);
             mapa.put("nombre", objects[1]);
             mapa.put("foto",byteOperation.decompressBytes((byte[])objects[2]));
