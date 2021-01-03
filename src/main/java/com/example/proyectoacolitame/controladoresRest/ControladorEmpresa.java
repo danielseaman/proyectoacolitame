@@ -3,10 +3,7 @@ package com.example.proyectoacolitame.controladoresRest;
 import com.example.proyectoacolitame.exceptions.DataNotFoundException;
 import com.example.proyectoacolitame.modelo.Empresa;
 import com.example.proyectoacolitame.modelo.Pedido;
-import com.example.proyectoacolitame.repositorio.AdministradorRepositorio;
-import com.example.proyectoacolitame.repositorio.CategoriaRepositorio;
-import com.example.proyectoacolitame.repositorio.EmpresaRepositorio;
-import com.example.proyectoacolitame.repositorio.PedidosRepositorio;
+import com.example.proyectoacolitame.repositorio.*;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
@@ -35,6 +32,8 @@ public class ControladorEmpresa {
     AdministradorRepositorio administradorRepositorio;
     @Autowired
     PedidosRepositorio pedidosRepositorio;
+    @Autowired
+    ProductoRepositorio productoRepositorio;
 
     ByteOperation byteOperation;
     private Empresa setDatos(@RequestBody Map<String, Object> mapJson, Empresa empresa) {
@@ -141,7 +140,17 @@ public class ControladorEmpresa {
             mapa.put("twitter",em.getTwitter());
             mapa.put("instagram",em.getInstagram());
             mapa.put("categoria",em.getCategoria().getNombre());
-            mapa.put("productos",em.getProductos());
+            List<Object[]> productos=productoRepositorio.findByEmpresa(em.getIdEmpresa());
+            List<HashMap<String,Object>> listaproductos=new ArrayList<>();
+            for(int i=0;i<productos.size();i++){
+                Object[] objects1=productos.get(i);
+                HashMap<String,Object> mapita=new HashMap<>();
+                mapita.put("id_producto",objects1[0]);
+                mapita.put("nombre",objects1[1]);
+                mapita.put("precio",objects1[2]);
+                listaproductos.add(mapita);
+            }
+            mapa.put("productos",listaproductos);
             mapa.put("comentarios",em.getComentarios());
             return mapa;
         }else{
