@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -76,6 +77,12 @@ public class ControladorEmpresa {
         }
         return listaUbicaciones;
     }
+
+    @GetMapping("/getCercanas/test")
+    public String testCercanas(){
+        return "You are allow";
+    }
+
     @GetMapping("/getCercanas/usuario/{latitud}/{longitud}")
     public List<Map<String,Object>> getCercanas(@PathVariable(value = "latitud")String latitud,@PathVariable(value = "longitud")String longitud){
         List<Empresa> empresas=empresaRepositorio.findAll();
@@ -111,6 +118,12 @@ public class ControladorEmpresa {
         System.out.println("cantidad emrpesas"+empresas.size()+"distancia"+distancia);
         return distancia;
     }
+
+    @GetMapping("/test")
+    public String testSecurity(){
+        return "Hello";
+    }
+
     @GetMapping("/correo/{correo}")
     public Empresa getEmpresaByCorreo(@PathVariable(value = "correo")String correo){
         Empresa em = empresaRepositorio.findByCorreo(correo);
@@ -122,6 +135,19 @@ public class ControladorEmpresa {
         }
         //manejar excepcion
     }
+
+//    @GetMapping("/correo/{correo}")
+//    public Empresa getEmpresaByCorreo(@PathVariable(value = "correo")String correo,Principal principal ){  //Principal object is injected
+//        System.out.println(principal.toString());
+//        Empresa em = empresaRepositorio.findByCorreo(correo);
+//        if(em!=null){
+//            em.setFoto(byteOperation.decompressBytes(em.getFoto()));
+//            return em;
+//        }else{
+//            throw new DataNotFoundException();
+//        }
+//        //manejar excepcion
+//    }
     @GetMapping("/id/{correo}")
     public HashMap<String,Object> getEmpresaById(@PathVariable(value = "correo")int correo){
         Empresa em = empresaRepositorio.findById(correo);
