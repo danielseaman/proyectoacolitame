@@ -51,7 +51,7 @@ public class ControladorProducto {
         productoRepositorio.deleteById(id);
         return "done";
     }
-    @GetMapping("/id/{id}")
+    @GetMapping("/id/{id}")//pasar a object
     public Producto getById(@PathVariable(value = "id")Integer id){
 
         if(productoRepositorio.findById(id).isPresent()){
@@ -110,6 +110,26 @@ public class ControladorProducto {
             mapa.put("descripcion", objects[4]);
             mapa.put("id_empresa", objects[5]);
             mapa.put("nombreEmpresa", objects[6]);
+            respuesta.add(mapa);
+        }
+        return respuesta;
+    }
+    @GetMapping("/empresa/{id_empresa}/{actual}/{cantidadmaxima")
+    public List<HashMap<String,Object>> getByEmpresa(@PathVariable(value="id_empresa")int empresa,@PathVariable(value="actual")int actual,@PathVariable(value="cantidadmaxima")int cantidadmaxima){
+        List<Object[]> productos=productoRepositorio.findByEmpresa(empresa);
+        List<HashMap<String,Object>> respuesta=new ArrayList<>();
+        if(cantidadmaxima>productos.size()){
+            cantidadmaxima=productos.size();
+        }
+        for (int i=actual;i<cantidadmaxima;i++) {
+            HashMap<String, Object> mapa = new HashMap<>();
+            Object[] objects = productos.get(i);
+            mapa.put("id_producto", objects[0]);
+            mapa.put("nombre", objects[1]);
+            mapa.put("foto",byteOperation.decompressBytes((byte[])objects[2]));
+            mapa.put("precio", objects[3]);
+            mapa.put("descripcion", objects[4]);
+
             respuesta.add(mapa);
         }
         return respuesta;

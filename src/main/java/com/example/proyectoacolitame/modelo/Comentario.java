@@ -1,8 +1,11 @@
 package com.example.proyectoacolitame.modelo;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.List;
+
 @Entity
 @Table(name = "comentario")
 public class Comentario {
@@ -24,6 +27,17 @@ public class Comentario {
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario")
     private UsuarioRegistrado usuarioRegistrado;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "comentario", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Respuesta> respuestas;
+
+    public List<Respuesta> getRespuestas() {
+        return respuestas;
+    }
+
+    public void setRespuestas(List<Respuesta> respuestas) {
+        this.respuestas = respuestas;
+    }
 
     public int getIdComentario() {
         return idComentario;

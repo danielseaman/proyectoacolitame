@@ -2,6 +2,7 @@ package com.example.proyectoacolitame.controladoresRest;
 
 import com.auth0.jwt.interfaces.Claim;
 import com.example.proyectoacolitame.exceptions.DataNotFoundException;
+import com.example.proyectoacolitame.modelo.AdministradorEmpresa;
 import com.example.proyectoacolitame.modelo.Empresa;
 import com.example.proyectoacolitame.modelo.Pedido;
 import com.example.proyectoacolitame.repositorio.*;
@@ -38,6 +39,7 @@ public class ControladorEmpresa {
     @Autowired
     ProductoRepositorio productoRepositorio;
 
+
     ByteOperation byteOperation;
     private Empresa setDatos(@RequestBody Map<String, Object> mapJson, Empresa empresa) {
         empresa.setNombre(mapJson.get("nombre").toString());
@@ -48,6 +50,10 @@ public class ControladorEmpresa {
         double longitud=(double)mapJson.get("longitud");
         empresa.setLatitud(latitud);
         empresa.setLongitud(longitud);
+        AdministradorEmpresa administradorEmpresa= new AdministradorEmpresa();
+        administradorEmpresa.setClave(mapJson.get("claveAdmin").toString());//hay que hashear
+        administradorEmpresa.setCorreo(mapJson.get("correoAdmin").toString());
+        administradorRepositorio.save(administradorEmpresa);
         empresa.setCategoria(categoriaRepositorio.findByNombre(mapJson.get("categoria").toString()));
         return empresaRepositorio.save(empresa);
     }
@@ -180,8 +186,8 @@ public class ControladorEmpresa {
                 mapita.put("precio",objects1[2]);
                 listaproductos.add(mapita);
             }
-            mapa.put("productos",listaproductos);
-            mapa.put("comentarios",em.getComentarios());
+            //mapa.put("productos",listaproductos);
+            //mapa.put("comentarios",em.getComentarios());
             return mapa;
         }else{
             throw new DataNotFoundException();
