@@ -1,5 +1,6 @@
 package com.example.proyectoacolitame.controladoresRest;
 
+import com.auth0.jwt.interfaces.Claim;
 import com.example.proyectoacolitame.exceptions.DataNotFoundException;
 import com.example.proyectoacolitame.modelo.Empresa;
 import com.example.proyectoacolitame.modelo.Pedido;
@@ -11,6 +12,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -137,8 +139,10 @@ public class ControladorEmpresa {
     }
 
 //    @GetMapping("/correo/{correo}")
-//    public Empresa getEmpresaByCorreo(@PathVariable(value = "correo")String correo,Principal principal ){  //Principal object is injected
-//        System.out.println(principal.toString());
+//    public Empresa getEmpresaByCorreo(@PathVariable(value = "correo")String correo, Authentication authentication ){  //Principal object is injected
+//        Map<String, Claim> user = (Map<String, Claim>) authentication.getPrincipal();
+//        System.out.println(user.toString());
+//        System.out.println(user.get("admin").asBoolean());
 //        Empresa em = empresaRepositorio.findByCorreo(correo);
 //        if(em!=null){
 //            em.setFoto(byteOperation.decompressBytes(em.getFoto()));
