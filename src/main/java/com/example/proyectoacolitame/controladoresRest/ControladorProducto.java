@@ -126,9 +126,9 @@ public class ControladorProducto {
             Object[] objects = productos.get(i);
             mapa.put("id_producto", objects[0]);
             mapa.put("nombre", objects[1]);
-            mapa.put("foto",byteOperation.decompressBytes((byte[])objects[2]));
-            mapa.put("precio", objects[3]);
-            mapa.put("descripcion", objects[4]);
+            mapa.put("foto",byteOperation.decompressBytes((byte[])objects[4]));
+            mapa.put("precio", objects[2]);
+            mapa.put("descripcion", objects[3]);
 
             respuesta.add(mapa);
         }
