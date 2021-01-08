@@ -114,7 +114,7 @@ public class ControladorProducto {
         }
         return respuesta;
     }
-    @GetMapping("/empresa/{id_empresa}/{actual}/{cantidadmaxima")
+    @GetMapping("/empresa/{id_empresa}/{actual}/{cantidadmaxima}")
     public List<HashMap<String,Object>> getByEmpresa(@PathVariable(value="id_empresa")int empresa,@PathVariable(value="actual")int actual,@PathVariable(value="cantidadmaxima")int cantidadmaxima){
         List<Object[]> productos=productoRepositorio.findByEmpresa(empresa);
         List<HashMap<String,Object>> respuesta=new ArrayList<>();
