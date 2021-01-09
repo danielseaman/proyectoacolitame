@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class Bienvenida {
     @Autowired
     UsuarioRepositorio usuarioRepositorio;
-    @RequestMapping(method = RequestMethod.GET, value = "/")
+    @RequestMapping(method = RequestMethod.GET, value = "/verificacion/")
     public String index() {
+
         return "Bienvenida.html";
     }
 }
