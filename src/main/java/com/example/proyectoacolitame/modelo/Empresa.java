@@ -35,7 +35,7 @@ public class Empresa {
     @Column(name = "instagram")
     private String instagram;
     @Column(name="correo_verificado")
-    private boolean verificado;
+    private Boolean verificado;
 
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
@@ -200,11 +200,11 @@ public class Empresa {
         this.calificacions = calificacions;
     }
 
-    public boolean isVerificado() {
+    public Boolean isVerificado() {
         return verificado;
     }
 
-    public void setVerificado(boolean verificado) {
+    public void setVerificado(Boolean verificado) {
         this.verificado = verificado;
     }
 }

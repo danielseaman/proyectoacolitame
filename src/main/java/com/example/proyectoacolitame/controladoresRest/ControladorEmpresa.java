@@ -250,7 +250,10 @@ public class ControladorEmpresa {
             throw new DataNotFoundException();
         }
     }
-
+    public void verficar(int idEmpresa){
+        Empresa empresa=empresaRepositorio.findById(idEmpresa);
+        empresa.setVerificado(true);
+    }
     @GetMapping("/getAllE")
     public List<Empresa> getEmpresaTodas(){
         List<Empresa> empresas = empresaRepositorio.findAll();
