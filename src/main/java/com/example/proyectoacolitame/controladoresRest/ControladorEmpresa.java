@@ -2,6 +2,7 @@ package com.example.proyectoacolitame.controladoresRest;
 
 import com.auth0.jwt.interfaces.Claim;
 import com.example.proyectoacolitame.exceptions.DataNotFoundException;
+import com.example.proyectoacolitame.exceptions.InsertFailed;
 import com.example.proyectoacolitame.modelo.AdministradorEmpresa;
 import com.example.proyectoacolitame.modelo.Empresa;
 import com.example.proyectoacolitame.modelo.Pedido;
@@ -14,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -55,12 +57,33 @@ public class ControladorEmpresa {
         administradorEmpresa.setCorreo(mapJson.get("correoAdmin").toString());
         administradorRepositorio.save(administradorEmpresa);
         empresa.setCategoria(categoriaRepositorio.findByNombre(mapJson.get("categoria").toString()));
-        return empresaRepositorio.save(empresa);
+        return empresa;
     }
+    @Transactional
     @PostMapping("/insertar")
     public Empresa guardar(@RequestBody Map<String,Object> mapJson){
         Empresa empresa = new Empresa();
-        return setDatos(mapJson, empresa);
+        empresa= setDatos(mapJson, empresa);
+        empresaRepositorio.save(empresa);
+        boolean resultado;
+        try {
+            HttpResponse<JsonNode> response = Unirest.post("http://localhost:3000/auth/singina")
+                    .header("Content-Type", "application/json")
+                    .body("{\"correo\":\""+mapJson.get("correo")+"\",\"clave\":\""+mapJson.get("clave")+"\",\"idempresa\":\""+empresa.getIdEmpresa()+"\"}")
+                    .asJson();
+            JSONObject r=response.getBody().getObject();
+            resultado=(boolean)r.get("resultado");
+        } catch (UnirestException e) {
+            e.printStackTrace();
+            resultado=false;
+        }
+        if(resultado){
+           return empresa;
+        }else{
+            empresaRepositorio.deleteById(empresa.getIdEmpresa());
+            throw new InsertFailed();
+        }
+
     }
     @GetMapping("/getCercanas/{latitud}/{longitud}/{categoria}")
     public List<Map<String,Object>> getCercanasCategoria(@PathVariable(value = "latitud")String latitud,@PathVariable(value = "longitud")String longitud,@PathVariable(value = "categoria")Integer categoria){
@@ -314,8 +337,8 @@ public class ControladorEmpresa {
     @PutMapping("/actualizar/idEmpresa/{id_empresa}")
     public Empresa actualizar(@RequestBody Map<String,Object> mapJson, @PathVariable(value = "id_empresa")Integer idEmpresa){
         Empresa empresa = empresaRepositorio.findById(idEmpresa).get();
-        return setDatos(mapJson, empresa);
-
+        empresa=setDatos(mapJson, empresa);
+        return empresaRepositorio.save(empresa);
     }
     @DeleteMapping("/borrar/idEmpresa/{id_empresa")
     public void borrarEmpresa(@PathVariable(value = "id_empresa")Integer idEmpresa){
