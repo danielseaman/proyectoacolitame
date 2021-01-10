@@ -185,7 +185,7 @@ public class ControladorEmpresa {
     public HashMap<String,Object> getEmpresaById(@PathVariable(value = "correo")int correo){
         Empresa em = empresaRepositorio.findById(correo);
         if(em!=null){
-            em.setFoto(byteOperation.decompressBytes(em.getFoto()));
+            //em.setFoto(byteOperation.decompressBytes(em.getFoto()));
             HashMap<String,Object> mapa=new HashMap<>();
             mapa.put("id_empresa",em.getIdEmpresa());
             mapa.put("nombre",em.getNombre());
@@ -194,7 +194,7 @@ public class ControladorEmpresa {
             mapa.put("correo",em.getCorreo());
             mapa.put("latitud",em.getLatitud());
             mapa.put("longitud",em.getLongitud());
-            mapa.put("foto",em.getFoto());
+            //mapa.put("foto",em.getFoto());
             mapa.put("facebook",em.getFacebook());
             mapa.put("twitter",em.getTwitter());
             mapa.put("instagram",em.getInstagram());

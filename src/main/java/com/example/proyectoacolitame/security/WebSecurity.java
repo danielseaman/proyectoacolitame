@@ -35,7 +35,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/calificacion/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/comentarios/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/respuesta/**").permitAll()
-//                .anyRequest().authenticated()
+                .anyRequest().authenticated()//esto estaba comentado
                 .and()
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))
                 // this disables session creation on Spring Security
