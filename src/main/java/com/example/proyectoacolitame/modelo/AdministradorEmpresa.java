@@ -12,7 +12,7 @@ public class AdministradorEmpresa {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id_administrador")
-    private int idAdministrador;
+    private String idAdministrador;
     @Column(name = "correo")
     private String correo;
     @Column(name ="clave")
@@ -28,11 +28,11 @@ public class AdministradorEmpresa {
     @OneToMany(mappedBy = "administradorEmpresa", cascade = CascadeType.ALL, orphanRemoval = true)
     List<RegistroLogInAdministrador> registroLogInAdministradorList;
 
-    public int getIdAdministrador() {
+    public String getIdAdministrador() {
         return idAdministrador;
     }
 
-    public void setIdAdministrador(int idAdministrador) {
+    public void setIdAdministrador(String idAdministrador) {
         this.idAdministrador = idAdministrador;
     }
 

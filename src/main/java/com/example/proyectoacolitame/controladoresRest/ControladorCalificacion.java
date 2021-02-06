@@ -29,7 +29,7 @@ public class ControladorCalificacion {
     public int calificar(@RequestBody Map<String,Object> mapJson, Authentication authentication){
         Map<String, Claim> user = (Map<String, Claim>) authentication.getPrincipal();
         int idEmpresa=(Integer)mapJson.get("idEmpresa");
-        int idusuario=user.get("sub").asInt();
+        String idusuario=user.get("sub").asString();
         if(calificacionRepositorio.findByEmpresaAndUsuarioRegistrado(idEmpresa,idusuario)!=null){
             Calificacion calificacion=calificacionRepositorio.findByEmpresaAndUsuarioRegistrado(idEmpresa,idusuario);
             calificacion.setValor((Integer)mapJson.get("valor"));

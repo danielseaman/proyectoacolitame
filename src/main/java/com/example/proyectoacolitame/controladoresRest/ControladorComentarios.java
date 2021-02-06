@@ -40,7 +40,7 @@ public class ControladorComentarios {
     public Comentario guardar(@RequestBody Map<String,Object> mapJson, Authentication authentication){
         Map<String, Claim> user = (Map<String, Claim>) authentication.getPrincipal();
         System.out.println(user);
-        int idusuario=Integer.parseUnsignedInt(user.get("sub").asString());
+        String idusuario=user.get("sub").asString();
         try {
             Comentario comentario = new Comentario();
             DateTimeFormatter dft = DateTimeFormatter.ofPattern("yyyy/MM/dd");

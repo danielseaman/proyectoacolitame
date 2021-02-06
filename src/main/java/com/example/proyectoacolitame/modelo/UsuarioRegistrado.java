@@ -12,7 +12,7 @@ public class UsuarioRegistrado {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_usuario")
-    private int idUsuario;
+    private String idUsuario;
     @Column(name = "clave")
     private String clave;
     @Column(name = "correo")
@@ -57,11 +57,11 @@ public class UsuarioRegistrado {
     @OneToMany(mappedBy = "usuarioRegistrado", cascade = CascadeType.ALL, orphanRemoval = true)
     List<RegistroLogInUsuario> registroLogInUsuariosList;
 
-    public int getIdUsuario() {
+    public String getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(int idUsuario) {
+    public void setIdUsuario(String idUsuario) {
         this.idUsuario = idUsuario;
     }
 

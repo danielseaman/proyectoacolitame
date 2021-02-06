@@ -37,7 +37,7 @@ public class ControladorPedidos {
     @PostMapping("/insertarCarrito")
     public Pedido guardarCarritoCompras(@RequestBody Map<String, Object> mapJson, Authentication authentication){
         Map<String, Claim> user = (Map<String, Claim>) authentication.getPrincipal();
-        int idusuario=user.get("sub").asInt();
+        String idusuario=user.get("sub").asString();
 
         Pedido pedido= new Pedido();
         /*DateTimeFormatter dft = DateTimeFormatter.ofPattern("yyyy/MM/dd");

@@ -37,7 +37,7 @@ public class ControladorRespuesta {
     @PostMapping("/responder")
     public Respuesta responder(@RequestBody Map<String,Object> mapJson, Authentication authentication){
         Map<String, Claim> user = (Map<String, Claim>) authentication.getPrincipal();
-        int idautor=user.get("sub").asInt();
+        String idautor=user.get("sub").asString();
         boolean esEmpresa=user.get("admin").asBoolean();
         Respuesta respuesta= new Respuesta();
         DateTimeFormatter dft = DateTimeFormatter.ofPattern("yyyy/MM/dd");
@@ -51,7 +51,10 @@ public class ControladorRespuesta {
         String correo1=comentarioRepositorio.findById((Integer)mapJson.get("idComentario")).get().getEmpresa().getCorreo();
         //si empresa==null el autor es un usuario sino el autor es empresa entonces usuario==null
         if(esEmpresa){
-            correoautor=administradorRepositorio.findByEmpresa(idautor).getCorreo();
+            //agregaste eso para saber como llega el id de una empresa en una respuesta
+            int idautor2=Integer.parseInt(idautor);
+            System.out.println("id empresa autora de comentario: "+idautor2);
+            correoautor=administradorRepositorio.findByEmpresa(idautor2).getCorreo();//pr
             respuesta.setComentario(comentario);
             respuesta.setEmpresa(comentario.getEmpresa());
         }else{
