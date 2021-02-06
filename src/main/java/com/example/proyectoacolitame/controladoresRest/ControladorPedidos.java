@@ -34,6 +34,7 @@ public class ControladorPedidos {
     ProductoRepositorio productoRepositorio;
 
     ByteOperation byteOperation = new ByteOperation();
+    @PostMapping("/insertarCarrito")
     public Pedido guardarCarritoCompras(@RequestBody Map<String, Object> mapJson, Authentication authentication){
         Map<String, Claim> user = (Map<String, Claim>) authentication.getPrincipal();
         int idusuario=user.get("sub").asInt();
@@ -75,7 +76,9 @@ public class ControladorPedidos {
         }
     }
     @PutMapping("/realizarPedido")
-    public List<Pedido> realizarPedido(@RequestBody Map<String, Object> mapJson){
+    public List<Pedido> realizarPedido(@RequestBody Map<String, Object> mapJson,Authentication authentication){
+        Map<String, Claim> user = (Map<String, Claim>) authentication.getPrincipal();
+        int idusuario=user.get("sub").asInt();
         DateTimeFormatter dft = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         LocalDateTime now = LocalDateTime.now();
         ArrayList<Integer> arreglo=(ArrayList<Integer>) mapJson.get("idpedidos");
