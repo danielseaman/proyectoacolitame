@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Integer.parseInt;
+
 @RestController
 @RequestMapping("/comentarios")
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET,RequestMethod.DELETE,RequestMethod.PUT, RequestMethod.POST})
@@ -37,7 +39,8 @@ public class ControladorComentarios {
     @PostMapping("/insertar")
     public Comentario guardar(@RequestBody Map<String,Object> mapJson, Authentication authentication){
         Map<String, Claim> user = (Map<String, Claim>) authentication.getPrincipal();
-        int idusuario=user.get("sub").asInt();
+        System.out.println(user);
+        int idusuario=Integer.parseUnsignedInt(user.get("sub").asString());
         try {
             Comentario comentario = new Comentario();
             DateTimeFormatter dft = DateTimeFormatter.ofPattern("yyyy/MM/dd");
