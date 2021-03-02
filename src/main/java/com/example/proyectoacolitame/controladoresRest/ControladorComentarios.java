@@ -58,6 +58,7 @@ public class ControladorComentarios {
             mail.enviarMail(correo2,"Comentario",body2);
             return comentarioRepositorio.save(comentario);
         }catch (Exception e){
+            System.out.println(e.getMessage());
             throw new DataNotFoundException();
         }
 

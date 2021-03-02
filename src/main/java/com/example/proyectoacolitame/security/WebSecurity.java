@@ -38,14 +38,16 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST,"/empresa/insertar").permitAll()
                 .anyRequest().authenticated()//esto estaba comentado
                 .and()
+                .cors().and()
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))
                 // this disables session creation on Spring Security
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
     }
 
-//    @Override
-//    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+   // @Override
+  //  public void configure(AuthenticationManagerBuilder auth) throws Exception {
+  //      auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
 //    }
 
     @Bean

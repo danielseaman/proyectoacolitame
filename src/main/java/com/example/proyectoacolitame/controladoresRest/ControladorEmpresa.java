@@ -64,8 +64,8 @@ public class ControladorEmpresa {
     public Empresa guardar(@RequestBody Map<String,Object> mapJson){
         Empresa empresa = new Empresa();
         empresa= setDatos(mapJson, empresa);
-        empresaRepositorio.save(empresa);
-        boolean resultado;
+        return empresaRepositorio.save(empresa);
+        /*boolean resultado;
         try {
             HttpResponse<JsonNode> response = Unirest.post("http://localhost:3000/auth/singina")
                     .header("Content-Type", "application/json")
@@ -84,7 +84,7 @@ public class ControladorEmpresa {
         }else{
             empresaRepositorio.deleteById(empresa.getIdEmpresa());
             throw new InsertFailed();
-        }
+        }*/
 
     }
     @GetMapping("/getCercanas/{latitud}/{longitud}/{categoria}")
@@ -347,7 +347,7 @@ public class ControladorEmpresa {
     public void borrarEmpresa(@PathVariable(value = "id_empresa")Integer idEmpresa){
         empresaRepositorio.deleteById(idEmpresa);
     }
-    @PutMapping(path = "/image/{id}")
+    @PostMapping(path = "/image/{id}")
     public Empresa guardarFoto(@RequestParam(value = "fileImage") MultipartFile file, @PathVariable(value = "id") Integer id) throws IOException {
         Empresa empresa = empresaRepositorio.findById(id).get();
         empresa.setFoto(byteOperation.compressBytes(file.getBytes()));
