@@ -21,6 +21,17 @@ public class UsuarioRegistrado {
     private String telefono;*/
     @Column(name = "nombre")
     private String nombre;
+
+    public boolean isExtauth() {
+        return extauth;
+    }
+
+    public void setExtauth(boolean extauth) {
+        this.extauth = extauth;
+    }
+
+    @Column(name="extauth")
+    private boolean extauth;
 /*
     @Column(name = "verificado")
     private boolean verificado;
