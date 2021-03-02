@@ -15,10 +15,8 @@ public class AdministradorEmpresa {
     private String idAdministrador;
     @Column(name = "correo")
     private String correo;
-    @Column(name ="clave")
-    private String clave;
-    @Column(name = "verificado")
-    private boolean verificado;
+
+
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "id_empresa")
     @JsonBackReference
@@ -44,21 +42,8 @@ public class AdministradorEmpresa {
         this.correo = correo;
     }
 
-    public String getClave() {
-        return clave;
-    }
 
-    public void setClave(String clave) {
-        this.clave = clave;
-    }
 
-    public boolean isVerificado() {
-        return verificado;
-    }
-
-    public void setVerificado(boolean verificado) {
-        this.verificado = verificado;
-    }
 
     public Empresa getEmpresa() {
         return empresa;

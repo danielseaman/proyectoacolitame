@@ -79,6 +79,7 @@ public class ControladorPedidos {
     public List<Pedido> realizarPedido(@RequestBody Map<String, Object> mapJson,Authentication authentication){
         Map<String, Claim> user = (Map<String, Claim>) authentication.getPrincipal();
         int idusuario=user.get("sub").asInt();
+        String nombre=user.get("name").asString();
         DateTimeFormatter dft = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         LocalDateTime now = LocalDateTime.now();
         ArrayList<Integer> arreglo=(ArrayList<Integer>) mapJson.get("idpedidos");
@@ -94,7 +95,7 @@ public class ControladorPedidos {
             pedidos.add(pedido);
             pedidosRepositorio.save(pedido);
             String correo=pedido.getEmpresa().getCorreo();
-            String body="El usuario: "+pedido.getUsuarioRegistrado().getNombre()+" ha pedido el producto: "+pedido.getProducto().getNombre()+"\n" +
+            String body="El usuario: "+pedido.getUsuarioRegistrado()+nombre+" ha pedido el producto: "+pedido.getProducto().getNombre()+"\n" +
                     "Mensaje del cliente: "+pedido.getMensaje()+"\n" +
                     "Contacto con el cliente: "+pedido.getUsuarioRegistrado().getCorreo();
             mail.enviarMail(correo,"Nuevo Pedido",body);
@@ -134,7 +135,7 @@ public class ControladorPedidos {
         Pedido pedido=pedidosRepositorio.findById(idpedido).get();
         String telefono=pedido.getEmpresa().getTelefono();
         String producto=pedido.getProducto().getNombre();
-        return "https://wa.me/"+telefono+"?text=Hola%20estoy%20interesado%20en%20el%20producto:%20"+producto;
+        return "https://wa.me/"+telefono+"?text=Hola%20estoy%20interesado%20en%20el%20producto:%20"+producto;//no es necesario el +
     }
 
 }

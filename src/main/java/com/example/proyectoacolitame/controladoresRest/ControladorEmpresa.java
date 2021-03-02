@@ -53,7 +53,7 @@ public class ControladorEmpresa {
         empresa.setLatitud(latitud);
         empresa.setLongitud(longitud);
         AdministradorEmpresa administradorEmpresa= new AdministradorEmpresa();
-        administradorEmpresa.setClave(mapJson.get("claveAdmin").toString());//hay que hashear
+        //administradorEmpresa.setClave(mapJson.get("claveAdmin").toString());//hay que hashear
         administradorEmpresa.setCorreo(mapJson.get("correoAdmin").toString());
         administradorRepositorio.save(administradorEmpresa);
         empresa.setCategoria(categoriaRepositorio.findByNombre(mapJson.get("categoria").toString()));
@@ -252,10 +252,7 @@ public class ControladorEmpresa {
             throw new DataNotFoundException();
         }
     }
-    public void verficar(int idEmpresa){
-        Empresa empresa=empresaRepositorio.findById(idEmpresa);
-        empresa.setVerificado(true);
-    }
+
     @GetMapping("/getAllE")
     public List<Empresa> getEmpresaTodas(){
         List<Empresa> empresas = empresaRepositorio.findAll();

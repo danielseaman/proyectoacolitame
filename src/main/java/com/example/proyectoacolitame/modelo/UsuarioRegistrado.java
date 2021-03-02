@@ -13,21 +13,21 @@ public class UsuarioRegistrado {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_usuario")
     private String idUsuario;
-    @Column(name = "clave")
-    private String clave;
+    /*@Column(name = "clave")
+    private String clave;*/
     @Column(name = "correo")
     private String correo;
-    @Column(name = "telefono")
-    private String telefono;
+    /*@Column(name = "telefono")
+    private String telefono;*/
     @Column(name = "nombre")
     private String nombre;
-
+/*
     @Column(name = "verificado")
     private boolean verificado;
 
 
     @Column(name = "bytes_foto")
-    private byte[] foto;
+    private byte[] foto;*/
 
     @JsonManagedReference
     @OneToMany(mappedBy = "usuarioRegistrado", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -49,6 +49,14 @@ public class UsuarioRegistrado {
         this.respuestas = respuestas;
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
     @JsonManagedReference
     @OneToMany(mappedBy = "usuarioRegistrado", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Respuesta> respuestas;
@@ -65,13 +73,6 @@ public class UsuarioRegistrado {
         this.idUsuario = idUsuario;
     }
 
-    public String getClave() {
-        return clave;
-    }
-
-    public void setClave(String clave) {
-        this.clave = clave;
-    }
 
     public String getCorreo() {
         return correo;
@@ -81,37 +82,7 @@ public class UsuarioRegistrado {
         this.correo = correo;
     }
 
-    public String getTelefono() {
-        return telefono;
-    }
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public boolean isVerificado() {
-        return verificado;
-    }
-
-    public void setVerificado(boolean verificado) {
-        this.verificado = verificado;
-    }
-
-    public byte[] getFoto() {
-        return foto;
-    }
-
-    public void setFoto(byte[] foto) {
-        this.foto = foto;
-    }
 
     public List<Comentario> getComentarios() {
         return comentarios;
