@@ -389,10 +389,22 @@ public class ControladorEmpresa {
         empresaRepositorio.deleteById(idEmpresa);
     }
     @PostMapping(path = "/image/{id}")
-    public String guardarFoto(@RequestParam(value = "fileImage") MultipartFile file, @PathVariable(value = "id") Integer id) throws IOException {
-        Empresa empresa = empresaRepositorio.findById(id).get();
-        empresa.setFoto(byteOperation.compressBytes(file.getBytes()));
-        return link2+"/"+id;
+    public HashMap<String,Object> guardarFoto(@RequestParam(value = "fileImage") MultipartFile file, @PathVariable(value = "id") Integer id) throws IOException {
+        Empresa em = empresaRepositorio.findById(id).get();
+        HashMap<String,Object> mapa=new HashMap<>();
+        mapa.put("id_empresa",em.getIdEmpresa());
+        mapa.put("nombre",em.getNombre());
+        mapa.put("direccion",em.getDireccion());
+        mapa.put("telefono",em.getTelefono());
+        mapa.put("correo",em.getCorreo());
+        mapa.put("latitud",em.getLatitud());
+        mapa.put("longitud",em.getLongitud());
+        mapa.put("foto",link2+"/"+em.getIdEmpresa());
+        mapa.put("facebook",em.getFacebook());
+        mapa.put("twitter",em.getTwitter());
+        mapa.put("instagram",em.getInstagram());
+        mapa.put("categoria",em.getCategoria().getNombre());
+        return mapa;
     }
     @GetMapping("/image/{id_empresa}")
     @ResponseBody

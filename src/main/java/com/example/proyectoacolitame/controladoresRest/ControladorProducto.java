@@ -79,12 +79,20 @@ public class ControladorProducto {
         return "done";
     }
     @GetMapping("/id/{id}")//pasar a object
-    public Producto getById(@PathVariable(value = "id")Integer id){
+    public HashMap<String,Object> getById(@PathVariable(value = "id")Integer id){
 
         if(productoRepositorio.findById(id).isPresent()){
-            Producto p = productoRepositorio.findById(id).get();
-            p.setFoto(byteOperation.decompressBytes(p.getFoto()));
-            return p;
+            Producto producto = productoRepositorio.findById(id).get();
+            HashMap<String,Object> mapa=new HashMap<>();
+            mapa.put("id_producto",producto.getIdProducto());
+            mapa.put("nombre",producto.getNombre());
+            mapa.put("foto",link+"/"+producto.getIdProducto());
+            mapa.put("precio", producto.getPrecio());
+            mapa.put("descripcion", producto.getDescripcion());
+            mapa.put("id_empresa", producto.getEmpresa().getIdEmpresa());
+            mapa.put("nombreEmpresa", producto.getEmpresa().getNombre());
+            mapa.put("fotoEmpresa",link2+"/"+producto.getEmpresa().getIdEmpresa());
+            return mapa;
         }else{
             throw new DataNotFoundException();
         }
@@ -92,10 +100,19 @@ public class ControladorProducto {
 
     }
     @PutMapping(path = "/image/{id}")
-    public String guardarFoto(@RequestParam(value = "fileImage") MultipartFile file, @PathVariable(value = "id") Integer id) throws IOException {
+    public HashMap<String,Object> guardarFoto(@RequestParam(value = "fileImage") MultipartFile file, @PathVariable(value = "id") Integer id) throws IOException {
         Producto producto = productoRepositorio.findById(id).get();
         producto.setFoto(byteOperation.compressBytes(file.getBytes()));
-        return link+"/"+id;
+        HashMap<String,Object> mapa=new HashMap<>();
+        mapa.put("id_producto",producto.getIdProducto());
+        mapa.put("nombre",producto.getNombre());
+        mapa.put("foto",link+"/"+producto.getIdProducto());
+        mapa.put("precio", producto.getPrecio());
+        mapa.put("descripcion", producto.getDescripcion());
+        mapa.put("id_empresa", producto.getEmpresa().getIdEmpresa());
+        mapa.put("nombreEmpresa", producto.getEmpresa().getNombre());
+        mapa.put("fotoEmpresa",link2+"/"+producto.getEmpresa().getIdEmpresa());
+        return mapa;
     }
     @GetMapping("/nombre/{nombre}")
     public List<HashMap<String,Object>> getByNombre(@PathVariable(value = "nombre")String nombre){
