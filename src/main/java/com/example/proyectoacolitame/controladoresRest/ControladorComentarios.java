@@ -60,7 +60,9 @@ public class ControladorComentarios {
             enviarCorreo.crearCorreo(correo2,mensaje2,"Comentario");
             enviarCorreo.start();
             enviarCorreo2.start();
-            return comentarioRepositorio.save(comentario);
+
+            comentarioRepositorio.save(comentario);
+            return comentario;
         }catch (Exception e){
             System.out.println(e.getMessage());
             throw new DataNotFoundException();

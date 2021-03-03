@@ -64,9 +64,14 @@ public class ControladorRespuesta {
         }
         String body1="El usuario "+correoautor+" ha escrito una respuesta en tu empresa";
         String body2="Has escrito una respuesta";
-        mail.enviarMail(correo1,"Comentario",body1);
-        mail.enviarMail(correoautor,"Comentario",body2);
-        return respuestaRepositorio.save(respuesta);
+        EnviarCorreo enviarCorreo = new EnviarCorreo();
+        enviarCorreo.crearCorreo(correo1,body1,"Respuesta");
+        enviarCorreo.start();
+        EnviarCorreo enviarCorreo1=new EnviarCorreo();
+        enviarCorreo1.crearCorreo(correoautor,body2,"Respuesta");
+        enviarCorreo1.start();
+        respuestaRepositorio.save(respuesta);
+        return respuesta;
     }
     @GetMapping("/getAutor/{id_respuesta}")
     public Map<String,String> getautor(@PathVariable(value = "id_respuesta")Integer idRespuesta){
