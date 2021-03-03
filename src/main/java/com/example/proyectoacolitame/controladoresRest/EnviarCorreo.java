@@ -13,7 +13,7 @@ public class EnviarCorreo extends Thread{
     public void crearCorreo(String correo1,String mensaje1,String asunto){
         this.correo1=correo1;
 
-        this.mensaje=mensaje;
+        this.mensaje=mensaje1;
 
         this.asunto=asunto;
     }
