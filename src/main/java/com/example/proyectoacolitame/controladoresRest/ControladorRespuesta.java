@@ -75,7 +75,7 @@ public class ControladorRespuesta {
         respuesta2.put("contenido",respuesta.getContenido());
         respuesta2.put("fecha",respuesta.getFecha());
         respuesta2.put("idComentario",respuesta.getIdRespuesta());
-        respuesta2.put("usuario",respuesta.getUsuarioRegistrado().getNombre());
+        respuesta2.put("usuario", respuestaRepositorio.findById(respuesta.getIdRespuesta()).get().getUsuarioRegistrado().getNombre());
         return respuesta2;
     }
     @GetMapping("/getAutor/{id_respuesta}")

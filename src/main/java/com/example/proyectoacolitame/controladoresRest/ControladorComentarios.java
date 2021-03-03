@@ -66,7 +66,7 @@ public class ControladorComentarios {
             respuesta.put("contenido",comentario.getContenido());
             respuesta.put("fecha",comentario.getFecha());
             respuesta.put("idComentario",comentario.getIdComentario());
-            respuesta.put("usuario",comentario.getUsuarioRegistrado().getNombre());
+            respuesta.put("usuario",comentarioRepositorio.findById(comentario.getIdComentario()).get().getUsuarioRegistrado().getNombre());
             return respuesta;
         }catch (Exception e){
             System.out.println(e.getMessage());
