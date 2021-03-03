@@ -389,10 +389,10 @@ public class ControladorEmpresa {
         empresaRepositorio.deleteById(idEmpresa);
     }
     @PostMapping(path = "/image/{id}")
-    public Empresa guardarFoto(@RequestParam(value = "fileImage") MultipartFile file, @PathVariable(value = "id") Integer id) throws IOException {
+    public String guardarFoto(@RequestParam(value = "fileImage") MultipartFile file, @PathVariable(value = "id") Integer id) throws IOException {
         Empresa empresa = empresaRepositorio.findById(id).get();
         empresa.setFoto(byteOperation.compressBytes(file.getBytes()));
-        return empresaRepositorio.save(empresa);
+        return link2+"/"+id;
     }
     @GetMapping("/image/{id_empresa}")
     @ResponseBody

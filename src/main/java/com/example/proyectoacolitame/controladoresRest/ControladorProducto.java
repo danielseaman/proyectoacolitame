@@ -92,10 +92,10 @@ public class ControladorProducto {
 
     }
     @PutMapping(path = "/image/{id}")
-    public Producto guardarFoto(@RequestParam(value = "fileImage") MultipartFile file, @PathVariable(value = "id") Integer id) throws IOException {
+    public String guardarFoto(@RequestParam(value = "fileImage") MultipartFile file, @PathVariable(value = "id") Integer id) throws IOException {
         Producto producto = productoRepositorio.findById(id).get();
         producto.setFoto(byteOperation.compressBytes(file.getBytes()));
-        return productoRepositorio.save(producto);
+        return link+"/"+id;
     }
     @GetMapping("/nombre/{nombre}")
     public List<HashMap<String,Object>> getByNombre(@PathVariable(value = "nombre")String nombre){
