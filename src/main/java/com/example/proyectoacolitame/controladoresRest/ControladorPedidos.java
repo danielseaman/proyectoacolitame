@@ -109,7 +109,7 @@ public class ControladorPedidos {
     @GetMapping("/getCarrito/{id_usuario}")
     public List<Map<String,String>>getPedidos(Authentication authentication){
         Map<String, Claim> user = (Map<String, Claim>) authentication.getPrincipal();
-        int idUsuario=user.get("sub").asInt();
+        String idUsuario=user.get("sub").asString();
         List<Pedido> pedidos = pedidosRepositorio.findByUsuarioRegistrado(idUsuario);
         List<Map<String,String>> respuesta=new ArrayList<>();
         for (int i=0;i<pedidos.size();i++){
