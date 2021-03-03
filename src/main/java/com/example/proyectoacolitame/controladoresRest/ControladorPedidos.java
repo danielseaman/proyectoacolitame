@@ -107,7 +107,9 @@ public class ControladorPedidos {
 
 
     @GetMapping("/getCarrito/{id_usuario}")
-    public List<Map<String,String>>getPedidos(@PathVariable(value = "id_usuario")Integer idUsuario){
+    public List<Map<String,String>>getPedidos(Authentication authentication){
+        Map<String, Claim> user = (Map<String, Claim>) authentication.getPrincipal();
+        int idUsuario=user.get("sub").asInt();
         List<Pedido> pedidos = pedidosRepositorio.findByUsuarioRegistrado(idUsuario);
         List<Map<String,String>> respuesta=new ArrayList<>();
         for (int i=0;i<pedidos.size();i++){
@@ -124,6 +126,7 @@ public class ControladorPedidos {
                 pedidocompleto.put("nombre", producto.getNombre());
                 pedidocompleto.put("precio", producto.getPrecio()+"");
                 pedidocompleto.put("descripcion", producto.getDescripcion());
+                pedidocompleto.put("foto", byteOperation.decompressBytes(producto.getFoto()).toString());
                 respuesta.add(pedidocompleto);
             }
 
