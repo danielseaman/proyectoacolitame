@@ -22,6 +22,8 @@ import java.util.Map;
 @RequestMapping("/producto")
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET,RequestMethod.DELETE,RequestMethod.PUT, RequestMethod.POST})
 public class ControladorProducto {
+    private String link="http://localhost:8080/producto";
+    private String link2="http://localhost:8080/empresa";
     @Autowired
     ProductoRepositorio productoRepositorio;
     @Autowired
@@ -40,7 +42,7 @@ public class ControladorProducto {
         return productoRepositorio.save(producto);
     }
     @PutMapping("/actualizar/idProducto/{id_producto}")
-    public HashMap<String,Object> actualizar(@RequestBody Map<String, Object> mapJson,@PathVariable(value = "id_producto")Integer idproducto){
+    public Producto actualizar(@RequestBody Map<String, Object> mapJson,@PathVariable(value = "id_producto")Integer idproducto){
         Producto producto = productoRepositorio.findById(idproducto).get();
         producto.setNombre(mapJson.get("nombre").toString());
         producto.setDescripcion(mapJson.get("descripcion").toString());
@@ -49,18 +51,14 @@ public class ControladorProducto {
         HashMap<String,Object> mapa=new HashMap<>();
         mapa.put("id_producto",producto.getIdProducto());
         mapa.put("nombre",producto.getNombre());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_JPEG);
-        byte[] image = byteOperation.decompressBytes(producto.getFoto());
-        headers.setContentLength(image.length);
-        HttpEntity<byte[]> imagen =new HttpEntity<>(image,headers);
-        mapa.put("foto",imagen);
+        mapa.put("foto",link+"/"+producto.getIdProducto());
         mapa.put("precio", producto.getPrecio());
         mapa.put("descripcion", producto.getDescripcion());
         mapa.put("id_empresa", producto.getEmpresa().getIdEmpresa());
         mapa.put("nombreEmpresa", producto.getEmpresa().getNombre());
-        productoRepositorio.save(producto);
-        return mapa;
+        mapa.put("fotoEmpresa",link2+"/"+producto.getEmpresa().getIdEmpresa());
+
+        return productoRepositorio.save(producto);
     }
     @DeleteMapping("/borrar/idProducto/{id_producto}")
     public String borrar(@PathVariable(value = "id_producto")Integer id){
@@ -81,15 +79,10 @@ public class ControladorProducto {
 
     }
     @PutMapping(path = "/image/{id}")
-    public  HttpEntity<byte[]> guardarFoto(@RequestParam(value = "fileImage") MultipartFile file, @PathVariable(value = "id") Integer id) throws IOException {
+    public Producto guardarFoto(@RequestParam(value = "fileImage") MultipartFile file, @PathVariable(value = "id") Integer id) throws IOException {
         Producto producto = productoRepositorio.findById(id).get();
         producto.setFoto(byteOperation.compressBytes(file.getBytes()));
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_JPEG);
-        byte[] image = byteOperation.decompressBytes(producto.getFoto());
-        headers.setContentLength(image.length);
-
-        return new HttpEntity<>(image,headers);
+        return productoRepositorio.save(producto);
     }
     @GetMapping("/nombre/{nombre}")
     public List<HashMap<String,Object>> getByNombre(@PathVariable(value = "nombre")String nombre){
@@ -101,22 +94,12 @@ public class ControladorProducto {
                 HashMap<String,Object> mapa=new HashMap<>();
                 mapa.put("id_producto",objects[0]);
                 mapa.put("nombre",objects[1]);
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.IMAGE_JPEG);
-                byte[] image = byteOperation.decompressBytes((byte[])objects[2]);
-                headers.setContentLength(image.length);
-                HttpEntity<byte[]> imagen =new HttpEntity<>(image,headers);
-                mapa.put("foto",imagen);
+                mapa.put("foto",link+"/"+objects[0]);
                 mapa.put("precio", objects[3]);
                 mapa.put("descripcion", objects[4]);
                 mapa.put("id_empresa", objects[5]);
                 mapa.put("nombreEmpresa", objects[6]);
-                HttpHeaders headers2 = new HttpHeaders();
-                headers.setContentType(MediaType.IMAGE_JPEG);
-                byte[] image2 = byteOperation.decompressBytes((byte[])objects[7]);
-                headers.setContentLength(image.length);
-                HttpEntity<byte[]> imagen2 =new HttpEntity<>(image2,headers2);
-                mapa.put("fotoEmpresa",imagen2);
+                mapa.put("fotoEmpresa",link2+"/"+objects[5]);
                 respuesta.add(mapa);
             }
             return respuesta;
@@ -136,12 +119,7 @@ public class ControladorProducto {
             Object[] objects = productos.get(i);
             mapa.put("id_producto", objects[0]);
             mapa.put("nombre", objects[1]);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.IMAGE_JPEG);
-            byte[] image = byteOperation.decompressBytes((byte[])objects[2]);
-            headers.setContentLength(image.length);
-            HttpEntity<byte[]> imagen =new HttpEntity<>(image,headers);
-            mapa.put("foto",imagen);
+            mapa.put("foto",link+"/"+objects[0]);
             mapa.put("precio", objects[3]);
             mapa.put("descripcion", objects[4]);
             mapa.put("id_empresa", objects[5]);
@@ -162,17 +140,25 @@ public class ControladorProducto {
             Object[] objects = productos.get(i);
             mapa.put("id_producto", objects[0]);
             mapa.put("nombre", objects[1]);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.IMAGE_JPEG);
-            byte[] image = byteOperation.decompressBytes((byte[])objects[4]);
-            headers.setContentLength(image.length);
-            HttpEntity<byte[]> imagen =new HttpEntity<>(image,headers);
-            mapa.put("foto",imagen);
+
+            mapa.put("foto",link+"/"+objects[0]);
             mapa.put("precio", objects[2]);
             mapa.put("descripcion", objects[3]);
 
             respuesta.add(mapa);
         }
         return respuesta;
+    }
+    @GetMapping("/image/{id_producto}")
+    @ResponseBody
+    public HttpEntity<byte[]> getPhoto(@PathVariable(value = "id_producto") Integer idProducto) throws IOException {
+        Producto producto = productoRepositorio.findById(idProducto).get();
+                HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+
+        byte[] image = ByteOperation.decompressBytes(producto.getFoto());
+        headers.setContentLength(image.length);
+        return new HttpEntity<>(image,headers);
+
     }
 }
