@@ -79,14 +79,15 @@ public class ControladorPedidos {
     @PutMapping("/realizarPedido")
     public List<Pedido> realizarPedido(@RequestBody Map<String, Object> mapJson,Authentication authentication){
         Map<String, Claim> user = (Map<String, Claim>) authentication.getPrincipal();
-        int idusuario=user.get("sub").asInt();
+        //int idusuario=user.get("sub").asInt();
         String nombre=user.get("name").asString();
         DateTimeFormatter dft = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         LocalDateTime now = LocalDateTime.now();
         ArrayList<Integer> arreglo=(ArrayList<Integer>) mapJson.get("idpedidos");
         String mensaje=mapJson.get("mensaje").toString();
         List<Pedido> pedidos = new ArrayList<>();
-        Mail mail=new Mail();
+        EnviarCorreo enviarCorreo= new EnviarCorreo();
+
         //enviar correo a las empresas
         for(int i=0;i<arreglo.size();i++){
             Pedido pedido= pedidosRepositorio.findById(arreglo.get(i)).get();
@@ -99,8 +100,9 @@ public class ControladorPedidos {
             String body="El usuario: "+pedido.getUsuarioRegistrado()+nombre+" ha pedido el producto: "+pedido.getProducto().getNombre()+"\n" +
                     "Mensaje del cliente: "+pedido.getMensaje()+"\n" +
                     "Contacto con el cliente: "+pedido.getUsuarioRegistrado().getCorreo();
-            mail.enviarMail(correo,"Nuevo Pedido",body);
 
+            enviarCorreo.crearCorreo(correo,body,"Pedido");
+            enviarCorreo.start();
 
         }
         return pedidos;

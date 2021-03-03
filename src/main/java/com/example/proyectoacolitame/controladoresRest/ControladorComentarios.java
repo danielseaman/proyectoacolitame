@@ -47,15 +47,19 @@ public class ControladorComentarios {
             LocalDateTime now = LocalDateTime.now();
             comentario.setContenido(mapJson.get("contenido").toString());
             comentario.setFecha(dft.format(now));
+            /*si necesitotodo por estos sets*/
             comentario.setUsuarioRegistrado(usuarioRepositorio.findById(idusuario).get());
             comentario.setEmpresa(empresaRepositorio.findById((Integer)mapJson.get("idEmpresa")).get());
             String correo1 =empresaRepositorio.findById((Integer)mapJson.get("idEmpresa")).get().getCorreo();
             String correo2=usuarioRepositorio.findById(idusuario).get().getCorreo();
-            Mail mail=new Mail();
-            String body1="El usuario "+correo2+" ha escrito un comentario en tu empresa";
-            String body2="Has escrito un comentario";
-            mail.enviarMail(correo1,"Comentario",body1);
-            mail.enviarMail(correo2,"Comentario",body2);
+            EnviarCorreo enviarCorreo= new EnviarCorreo();
+            String mensaje1="El usuario "+correo2+" ha escrito un comentario en tu empresa";
+            String mensaje2="Has escrito un comentario";
+            enviarCorreo.crearCorreo(correo1,mensaje1,"Comentario");
+            EnviarCorreo enviarCorreo2= new EnviarCorreo();
+            enviarCorreo.crearCorreo(correo2,mensaje2,"Comentario");
+            enviarCorreo.start();
+            enviarCorreo2.start();
             return comentarioRepositorio.save(comentario);
         }catch (Exception e){
             System.out.println(e.getMessage());
