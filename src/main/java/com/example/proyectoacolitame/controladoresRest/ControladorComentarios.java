@@ -37,7 +37,7 @@ public class ControladorComentarios {
 
     ByteOperation byteOperation = new ByteOperation();
     @PostMapping("/insertar")
-    public Comentario guardar(@RequestBody Map<String,Object> mapJson, Authentication authentication){
+    public HashMap<String,Object> guardar(@RequestBody Map<String,Object> mapJson, Authentication authentication){
         Map<String, Claim> user = (Map<String, Claim>) authentication.getPrincipal();
         System.out.println(user);
         String idusuario=user.get("sub").asString();
@@ -67,7 +67,7 @@ public class ControladorComentarios {
             respuesta.put("fecha",comentario.getFecha());
             respuesta.put("idComentario",comentario.getIdComentario());
             respuesta.put("usuario",comentario.getUsuarioRegistrado().getNombre());
-            return comentario;
+            return respuesta;
         }catch (Exception e){
             System.out.println(e.getMessage());
             throw new DataNotFoundException();

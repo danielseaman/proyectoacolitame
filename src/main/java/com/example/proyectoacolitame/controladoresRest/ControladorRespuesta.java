@@ -35,7 +35,7 @@ public class ControladorRespuesta {
     @Autowired
     AdministradorRepositorio administradorRepositorio;
     @PostMapping("/responder")
-    public Respuesta responder(@RequestBody Map<String,Object> mapJson, Authentication authentication){
+    public HashMap<String,Object> responder(@RequestBody Map<String,Object> mapJson, Authentication authentication){
         Map<String, Claim> user = (Map<String, Claim>) authentication.getPrincipal();
         String idautor=user.get("sub").asString();
         boolean esEmpresa=user.get("admin").asBoolean();
@@ -71,7 +71,12 @@ public class ControladorRespuesta {
         enviarCorreo1.crearCorreo(correoautor,body2,"Respuesta");
         enviarCorreo1.start();
         respuestaRepositorio.save(respuesta);
-        return respuesta;
+        HashMap<String,Object> respuesta2=new HashMap<>();
+        respuesta2.put("contenido",respuesta.getContenido());
+        respuesta2.put("fecha",respuesta.getFecha());
+        respuesta2.put("idComentario",respuesta.getIdRespuesta());
+        respuesta2.put("usuario",respuesta.getUsuarioRegistrado().getNombre());
+        return respuesta2;
     }
     @GetMapping("/getAutor/{id_respuesta}")
     public Map<String,String> getautor(@PathVariable(value = "id_respuesta")Integer idRespuesta){
