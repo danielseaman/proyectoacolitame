@@ -69,7 +69,8 @@ public class ControladorPedidos {
 
     }
     @DeleteMapping("/borrarCarro/{id_pedido}")
-    public void eliminarPedido(@PathVariable(value = "id_pedido")Integer idPedido){
+    public void eliminarPedido(@PathVariable(value = "id_pedido")Integer idPedido,Authentication authentication){
+        Map<String, Claim> user = (Map<String, Claim>) authentication.getPrincipal();
         Pedido pedido=pedidosRepositorio.findById(idPedido).get();
         if(pedido.getFecha()==null){
             pedidosRepositorio.deleteById(idPedido);
