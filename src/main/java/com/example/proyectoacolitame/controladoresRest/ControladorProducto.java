@@ -62,7 +62,7 @@ public class ControladorProducto {
             throw new DataNotFoundException();
         }
 
-        //excepcion
+
     }
     @PutMapping(path = "/image/{id}")
     public Producto guardarFoto(@RequestParam(value = "fileImage") MultipartFile file, @PathVariable(value = "id") Integer id) throws IOException {
