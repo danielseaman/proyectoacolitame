@@ -62,6 +62,11 @@ public class ControladorComentarios {
             enviarCorreo2.start();
 
             comentarioRepositorio.save(comentario);
+            HashMap<String,Object> respuesta=new HashMap<>();
+            respuesta.put("contenido",comentario.getContenido());
+            respuesta.put("fecha",comentario.getFecha());
+            respuesta.put("idComentario",comentario.getIdComentario());
+            respuesta.put("usuario",comentario.getUsuarioRegistrado().getNombre());
             return comentario;
         }catch (Exception e){
             System.out.println(e.getMessage());
