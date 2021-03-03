@@ -36,7 +36,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/comentarios/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/respuesta/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/empresa/insertar").permitAll()
-                .anyRequest().authenticated()//esto estaba comentado
+                .anyRequest() .authenticated()//esto estaba comentado
                 .and()
                 .cors().and()
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))

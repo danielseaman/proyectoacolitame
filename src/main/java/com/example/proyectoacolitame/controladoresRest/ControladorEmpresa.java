@@ -59,17 +59,25 @@ public class ControladorEmpresa {
         empresa.setCategoria(categoriaRepositorio.findByNombre(mapJson.get("categoria").toString()));
         return empresa;
     }
-    @Transactional
+//    @Transactional
     @PostMapping("/insertar")
-    public Empresa guardar(@RequestBody Map<String,Object> mapJson){
+    public Empresa guardar(@RequestBody Map<String,Object> mapJson,Authentication authentication,@RequestHeader("Authorization") String token){
+//        token = token.replaceAll("Bearer ","");
+        Map<String,Claim> user = (Map<String, Claim>) authentication.getPrincipal();
+        String adminId = user.get("sub").asString();
         Empresa empresa = new Empresa();
         empresa= setDatos(mapJson, empresa);
-        return empresaRepositorio.save(empresa);
-        /*boolean resultado;
-        try {
-            HttpResponse<JsonNode> response = Unirest.post("http://localhost:3000/auth/singina")
+        empresaRepositorio.save(empresa);
+//        String adminId =
+//        return empresaRepositorio.save(empresa);
+        System.out.printf("{\"idempresa\":"+empresa.getIdEmpresa()+",\"adminid\":\""+adminId+"\"}");
+        boolean resultado;
+        try { //Esto actualiza el idEmpresa en la cuenta de admin
+            HttpResponse<JsonNode> response = Unirest.post("http://localhost:3000/auth/updateadmin")
                     .header("Content-Type", "application/json")
-                    .body("{\"correo\":\""+mapJson.get("correo")+"\",\"clave\":\""+mapJson.get("clave")+"\",\"idempresa\":\""+empresa.getIdEmpresa()+"\"}")
+                    .header("Authorization",token)
+//                    .body("[{\"correo\":\""+mapJson.get("correo")+"\",\"idempresa\":\""+empresa.getIdEmpresa()+"\"}]")
+                    .body("{\"idempresa\":"+empresa.getIdEmpresa()+",\"adminid\":\""+adminId+"\"}")
                     .asJson();
 
             JSONObject r=response.getBody().getObject();
@@ -84,7 +92,7 @@ public class ControladorEmpresa {
         }else{
             empresaRepositorio.deleteById(empresa.getIdEmpresa());
             throw new InsertFailed();
-        }*/
+        }
 
     }
     @GetMapping("/getCercanas/{latitud}/{longitud}/{categoria}")
