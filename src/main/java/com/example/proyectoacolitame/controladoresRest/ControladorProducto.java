@@ -39,6 +39,7 @@ public class ControladorProducto {
         producto.setEmpresa(empresaRepositorio.findById(idEmpresa).get());
         double precio =Double.parseDouble(mapJson.get("precio").toString());
         producto.setPrecio(precio);
+        producto=productoRepositorio.save(producto);
         HashMap<String,Object> mapa=new HashMap<>();
         mapa.put("id_producto",producto.getIdProducto());
         mapa.put("nombre",producto.getNombre());
@@ -49,7 +50,7 @@ public class ControladorProducto {
         mapa.put("nombreEmpresa", producto.getEmpresa().getNombre());
         mapa.put("fotoEmpresa",link2+"/"+producto.getEmpresa().getIdEmpresa());
 
-        productoRepositorio.save(producto);
+
         return mapa;
     }
     @PutMapping("/actualizar/idProducto/{id_producto}")
