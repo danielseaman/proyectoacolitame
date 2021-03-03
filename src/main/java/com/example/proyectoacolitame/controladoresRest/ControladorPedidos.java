@@ -107,26 +107,26 @@ public class ControladorPedidos {
 
 
     @GetMapping("/getCarrito/{id_usuario}")
-    public List<Map<String,String>>getPedidos(Authentication authentication){
+    public List<Map<String,Object>>getPedidos(Authentication authentication){
         Map<String, Claim> user = (Map<String, Claim>) authentication.getPrincipal();
         String idUsuario=user.get("sub").asString();
         List<Pedido> pedidos = pedidosRepositorio.findByUsuarioRegistrado(idUsuario);
-        List<Map<String,String>> respuesta=new ArrayList<>();
+        List<Map<String,Object>> respuesta=new ArrayList<>();
         for (int i=0;i<pedidos.size();i++){
             Pedido pedido=pedidos.get(i);
             Producto producto=pedido.getProducto();
-            Map<String,String> pedidocompleto=new HashMap<>();
+            Map<String,Object> pedidocompleto=new HashMap<>();
             pedidocompleto.put("idPedido",pedido.getIdPedido()+"");
             //pedidocompleto.put("fecha",pedido.getFecha());
             //pedidocompleto.put("revisado",pedido.getRevisado().toString());
             //pedidocompleto.put("mensaje",pedido.getMensaje());
             System.out.println(pedido.getFecha());
             if(pedido.getFecha()==null){
-                pedidocompleto.put("idProducto", producto.getIdProducto()+"");
+                pedidocompleto.put("idProducto", producto.getIdProducto());
                 pedidocompleto.put("nombre", producto.getNombre());
-                pedidocompleto.put("precio", producto.getPrecio()+"");
+                pedidocompleto.put("precio", producto.getPrecio());
                 pedidocompleto.put("descripcion", producto.getDescripcion());
-                pedidocompleto.put("foto", byteOperation.decompressBytes(producto.getFoto()).toString());
+                pedidocompleto.put("foto", byteOperation.decompressBytes(producto.getFoto()));
                 respuesta.add(pedidocompleto);
             }
 
