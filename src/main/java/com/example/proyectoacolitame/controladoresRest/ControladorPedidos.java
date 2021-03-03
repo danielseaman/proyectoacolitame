@@ -97,7 +97,7 @@ public class ControladorPedidos {
             pedidos.add(pedido);
             pedidosRepositorio.save(pedido);
             String correo=pedido.getEmpresa().getCorreo();
-            String body="El usuario: "+pedido.getUsuarioRegistrado()+nombre+" ha pedido el producto: "+pedido.getProducto().getNombre()+"\n" +
+            String body="El usuario: "+pedido.getUsuarioRegistrado().getNombre()+" ha pedido el producto: "+pedido.getProducto().getNombre()+"\n" +
                     "Mensaje del cliente: "+pedido.getMensaje()+"\n" +
                     "Contacto con el cliente: "+pedido.getUsuarioRegistrado().getCorreo();
 
