@@ -37,7 +37,7 @@ public class ControladorProducto {
         producto.setNombre(mapJson.get("nombre").toString());
         producto.setDescripcion(mapJson.get("descripcion").toString());
         producto.setEmpresa(empresaRepositorio.findById(idEmpresa).get());
-        double precio = (double)mapJson.get("precio");
+        double precio =Double.parseDouble(mapJson.get("precio").toString());
         producto.setPrecio(precio);
         HashMap<String,Object> mapa=new HashMap<>();
         mapa.put("id_producto",producto.getIdProducto());
@@ -57,7 +57,7 @@ public class ControladorProducto {
         Producto producto = productoRepositorio.findById(idproducto).get();
         producto.setNombre(mapJson.get("nombre").toString());
         producto.setDescripcion(mapJson.get("descripcion").toString());
-        double precio = (double)mapJson.get("precio");
+        double precio = Double.parseDouble(mapJson.get("precio").toString());
         producto.setPrecio(precio);
         HashMap<String,Object> mapa=new HashMap<>();
         mapa.put("id_producto",producto.getIdProducto());
