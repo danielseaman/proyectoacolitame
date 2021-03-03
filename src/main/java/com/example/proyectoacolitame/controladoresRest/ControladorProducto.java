@@ -22,8 +22,8 @@ import java.util.Map;
 @RequestMapping("/producto")
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET,RequestMethod.DELETE,RequestMethod.PUT, RequestMethod.POST})
 public class ControladorProducto {
-    private String link="http://localhost:8080/producto";
-    private String link2="http://localhost:8080/empresa";
+    private String link="http://localhost:8080/producto/image";
+    private String link2="http://localhost:8080/empresa/image";
     @Autowired
     ProductoRepositorio productoRepositorio;
     @Autowired

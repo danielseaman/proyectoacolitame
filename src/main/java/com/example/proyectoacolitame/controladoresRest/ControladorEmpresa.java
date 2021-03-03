@@ -34,7 +34,7 @@ import java.util.Map;
 @RequestMapping("/empresa")
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET,RequestMethod.DELETE,RequestMethod.PUT, RequestMethod.POST})
 public class ControladorEmpresa {
-    private String link2="http://localhost:8080/empresa";
+    private String link2="http://localhost:8080/empresa/image";
     @Autowired
     EmpresaRepositorio empresaRepositorio;
     @Autowired
@@ -400,7 +400,6 @@ public class ControladorEmpresa {
         Empresa empresa=empresaRepositorio.findById(idEmpresa).get();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
-
         byte[] image = ByteOperation.decompressBytes(empresa.getFoto());
         headers.setContentLength(image.length);
         return new HttpEntity<>(image,headers);
