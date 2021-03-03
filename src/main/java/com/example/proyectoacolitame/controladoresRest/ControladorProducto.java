@@ -32,17 +32,28 @@ public class ControladorProducto {
     ComentarioRepositorio comentarioRepositorio;
     ByteOperation byteOperation = new ByteOperation();
     @PostMapping("/insertar/{id_empresa}")
-    public Producto guardar(@RequestBody Map<String, Object> mapJson, @PathVariable(value = "id_empresa")Integer idEmpresa){
+    public HashMap<String,Object> guardar(@RequestBody Map<String, Object> mapJson, @PathVariable(value = "id_empresa")Integer idEmpresa){
         Producto producto = new Producto();
         producto.setNombre(mapJson.get("nombre").toString());
         producto.setDescripcion(mapJson.get("descripcion").toString());
         producto.setEmpresa(empresaRepositorio.findById(idEmpresa).get());
         double precio = (double)mapJson.get("precio");
         producto.setPrecio(precio);
-        return productoRepositorio.save(producto);
+        HashMap<String,Object> mapa=new HashMap<>();
+        mapa.put("id_producto",producto.getIdProducto());
+        mapa.put("nombre",producto.getNombre());
+        mapa.put("foto",link+"/"+producto.getIdProducto());
+        mapa.put("precio", producto.getPrecio());
+        mapa.put("descripcion", producto.getDescripcion());
+        mapa.put("id_empresa", producto.getEmpresa().getIdEmpresa());
+        mapa.put("nombreEmpresa", producto.getEmpresa().getNombre());
+        mapa.put("fotoEmpresa",link2+"/"+producto.getEmpresa().getIdEmpresa());
+
+        productoRepositorio.save(producto);
+        return mapa;
     }
     @PutMapping("/actualizar/idProducto/{id_producto}")
-    public Producto actualizar(@RequestBody Map<String, Object> mapJson,@PathVariable(value = "id_producto")Integer idproducto){
+    public HashMap<String,Object> actualizar(@RequestBody Map<String, Object> mapJson,@PathVariable(value = "id_producto")Integer idproducto){
         Producto producto = productoRepositorio.findById(idproducto).get();
         producto.setNombre(mapJson.get("nombre").toString());
         producto.setDescripcion(mapJson.get("descripcion").toString());
@@ -58,7 +69,8 @@ public class ControladorProducto {
         mapa.put("nombreEmpresa", producto.getEmpresa().getNombre());
         mapa.put("fotoEmpresa",link2+"/"+producto.getEmpresa().getIdEmpresa());
 
-        return productoRepositorio.save(producto);
+        productoRepositorio.save(producto);
+        return mapa;
     }
     @DeleteMapping("/borrar/idProducto/{id_producto}")
     public String borrar(@PathVariable(value = "id_producto")Integer id){
