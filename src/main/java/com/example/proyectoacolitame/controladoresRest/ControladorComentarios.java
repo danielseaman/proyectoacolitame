@@ -83,10 +83,10 @@ public class ControladorComentarios {
         //}
         List<Map<String,Object>> json=new ArrayList<>();
         List<Comentario> comentarios=comentarioRepositorio.findByEmpresa(idEmpresa);
-        if(cantidadmaxima>comentarios.size()){
+        if(actual+cantidadmaxima>comentarios.size()){
             cantidadmaxima=comentarios.size();
         }
-        for(int i=actual;i<actual+cantidadmaxima;i++){
+        for(int i=actual;i<cantidadmaxima;i++){
             Comentario comentario=comentarios.get(i);
             List<Respuesta> respuestas=comentario.getRespuestas();
             List<Map<String,String>> listarespuestas=new ArrayList<>();

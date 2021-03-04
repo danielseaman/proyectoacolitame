@@ -331,11 +331,11 @@ public class ControladorEmpresa {
     public List<HashMap<String,Object>> getEmpresaCategoria(@PathVariable(value = "categoria")int categoria,@PathVariable(value = "actual")int actual,@PathVariable(value = "cantidadmaxima")int cantidadmaxima) throws DataNotFoundException{
         List<Object[]> empresas = empresaRepositorio.findByCategoria(categoria);
         List<HashMap<String,Object>> respuestas=new ArrayList<>();
-        if(cantidadmaxima>empresas.size()){
+        if(actual+cantidadmaxima>empresas.size()){
             cantidadmaxima=empresas.size();
         }
         if(empresas!=null){
-            for (int i=actual;i<actual+cantidadmaxima;i++) {
+            for (int i=actual;i<cantidadmaxima;i++) {
                 HashMap<String,Object> mapa= new HashMap<>();
                 Object[] objects=empresas.get(i);
                 mapa.put("id_empresa",objects[0]);

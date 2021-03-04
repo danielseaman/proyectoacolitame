@@ -145,10 +145,10 @@ public class ControladorProducto {
     public List<HashMap<String,Object>> getByCategoria(@PathVariable(value = "categoria")int categoria,@PathVariable(value = "actual")int actual,@PathVariable(value = "cantidadmaxima")int cantidadmaxima){
         List<Object[]> productos=productoRepositorio.findByCategoria(categoria);
         List<HashMap<String,Object>> respuesta=new ArrayList<>();
-        if(cantidadmaxima<productos.size()){
+        if(actual+cantidadmaxima<productos.size()){
             cantidadmaxima=productos.size();
         }
-        for (int i=actual;i<actual+cantidadmaxima;i++) {
+        for (int i=actual;i<cantidadmaxima;i++) {
             HashMap<String, Object> mapa = new HashMap<>();
             Object[] objects = productos.get(i);
             mapa.put("id_producto", objects[0]);
@@ -166,10 +166,10 @@ public class ControladorProducto {
     public List<HashMap<String,Object>> getByEmpresa(@PathVariable(value="id_empresa")int empresa,@PathVariable(value="actual")int actual,@PathVariable(value="cantidadmaxima")int cantidadmaxima){
         List<Object[]> productos=productoRepositorio.findByEmpresa(empresa);
         List<HashMap<String,Object>> respuesta=new ArrayList<>();
-        if(cantidadmaxima>productos.size()){
+        if(actual+cantidadmaxima>productos.size()){
             cantidadmaxima=productos.size();
         }
-        for (int i=actual;i<actual+cantidadmaxima;i++) {
+        for (int i=actual;i<cantidadmaxima;i++) {
             HashMap<String, Object> mapa = new HashMap<>();
             Object[] objects = productos.get(i);
             mapa.put("id_producto", objects[0]);
