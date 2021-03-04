@@ -15,4 +15,8 @@ public interface EmpresaRepositorio extends JpaRepository<Empresa,Integer> {
     Empresa findById(int id_empresa);
     @Query(value="select id_empresa,nombre,correo,bytes_foto from empresa  where empresa.id_categoria=?1",nativeQuery=true)//numero 2
     List<Object[]> findByCategoria(int categoria);
+    @Query(value="select id_empresa,empresa.nombre,facebook,twitter,instagram from empresa,administrador_empresa where administrador_empresa.id_empresa=empresa.id_empresa and id_administrador=?1",nativeQuery = true)
+    List<Object[]> findbyAdmin(String idAdministrador);
+    @Query(value = "select id_empresa from empresa  where empresa.nombre=?1",nativeQuery=true)
+    Integer findByNombre2(String nombre);
 }

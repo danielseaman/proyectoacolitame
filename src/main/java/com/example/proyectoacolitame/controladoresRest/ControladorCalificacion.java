@@ -33,12 +33,14 @@ public class ControladorCalificacion {
         if(calificacionRepositorio.findByEmpresaAndUsuarioRegistrado(idEmpresa,idusuario)!=null){
             Calificacion calificacion=calificacionRepositorio.findByEmpresaAndUsuarioRegistrado(idEmpresa,idusuario);
             calificacion.setValor((Integer)mapJson.get("valor"));
+            calificacionRepositorio.save(calificacion);
             return calificacionpromedio(idEmpresa);
         }else{
             Calificacion calificacion= new Calificacion();
             calificacion.setEmpresa(empresaRepositorio.findById(idEmpresa));
             calificacion.setUsuarioRegistrado(usuarioRepositorio.findById(idusuario).get());
             calificacion.setValor((Integer)mapJson.get("valor"));
+            calificacionRepositorio.save(calificacion);
             return  calificacionpromedio(idEmpresa);
         }
 

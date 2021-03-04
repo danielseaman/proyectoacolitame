@@ -61,6 +61,8 @@ public class ControladorRespuesta {
             UsuarioRegistrado usuarioRegistrado =usuarioRepositorio.findById(idautor).get();
             respuesta.setComentario(comentario);
             respuesta.setUsuarioRegistrado(usuarioRegistrado);
+            correoautor = usuarioRegistrado.getCorreo();
+            System.out.println(correoautor);
         }
         String body1="El usuario "+correoautor+" ha escrito una respuesta en tu empresa";
         String body2="Has escrito una respuesta";

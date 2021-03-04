@@ -6,6 +6,7 @@ import com.example.proyectoacolitame.exceptions.InsertFailed;
 import com.example.proyectoacolitame.modelo.AdministradorEmpresa;
 import com.example.proyectoacolitame.modelo.Empresa;
 import com.example.proyectoacolitame.modelo.Pedido;
+import com.example.proyectoacolitame.modelo.Producto;
 import com.example.proyectoacolitame.repositorio.*;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -33,6 +34,7 @@ import java.util.Map;
 @RequestMapping("/empresa")
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET,RequestMethod.DELETE,RequestMethod.PUT, RequestMethod.POST})
 public class ControladorEmpresa {
+    private String link2="http://localhost:8080/empresa/image";
     @Autowired
     EmpresaRepositorio empresaRepositorio;
     @Autowired
@@ -64,7 +66,7 @@ public class ControladorEmpresa {
     }
 //    @Transactional
     @PostMapping("/insertar")
-    public Empresa guardar(@RequestBody Map<String,Object> mapJson,Authentication authentication,@RequestHeader("Authorization") String token){
+    public HashMap<String,Object> guardar(@RequestBody Map<String,Object> mapJson,Authentication authentication,@RequestHeader("Authorization") String token){
 //        token = token.replaceAll("Bearer ","");
         Map<String,Claim> user = (Map<String, Claim>) authentication.getPrincipal();
         String adminId = user.get("sub").asString();
@@ -91,7 +93,20 @@ public class ControladorEmpresa {
             resultado=false;
         }
         if(resultado){
-           return empresa;
+            HashMap<String,Object> mapa=new HashMap<>();
+            mapa.put("id_empresa",empresa.getIdEmpresa());
+            mapa.put("nombre",empresa.getNombre());
+            mapa.put("direccion",empresa.getDireccion());
+            mapa.put("telefono",empresa.getTelefono());
+            mapa.put("correo",empresa.getCorreo());
+            mapa.put("latitud",empresa.getLatitud());
+            mapa.put("longitud",empresa.getLongitud());
+            mapa.put("foto",link2+"/"+empresa.getIdEmpresa());
+            mapa.put("facebook",empresa.getFacebook());
+            mapa.put("twitter",empresa.getTwitter());
+            mapa.put("instagram",empresa.getInstagram());
+            mapa.put("categoria",empresa.getCategoria().getNombre());
+           return mapa;
         }else{
             empresaRepositorio.deleteById(empresa.getIdEmpresa());
             throw new InsertFailed();
@@ -198,7 +213,7 @@ public class ControladorEmpresa {
     public HashMap<String,Object> getEmpresaById(@PathVariable(value = "correo")int correo){
         Empresa em = empresaRepositorio.findById(correo);
         if(em!=null){
-            em.setFoto(byteOperation.decompressBytes(em.getFoto()));
+            //em.setFoto(byteOperation.decompressBytes(em.getFoto()));
             HashMap<String,Object> mapa=new HashMap<>();
             mapa.put("id_empresa",em.getIdEmpresa());
             mapa.put("nombre",em.getNombre());
@@ -207,7 +222,7 @@ public class ControladorEmpresa {
             mapa.put("correo",em.getCorreo());
             mapa.put("latitud",em.getLatitud());
             mapa.put("longitud",em.getLongitud());
-            mapa.put("foto",em.getFoto());
+            mapa.put("foto",link2+"/"+em.getIdEmpresa());
             mapa.put("facebook",em.getFacebook());
             mapa.put("twitter",em.getTwitter());
             mapa.put("instagram",em.getInstagram());
@@ -240,7 +255,7 @@ public class ControladorEmpresa {
                 Object[] objects=em.get(i);
                 mapa.put("id_empresa",objects[0]);
                 mapa.put("nombre",objects[1]);
-                //mapa.put("foto",byteOperation.decompressBytes((byte[])objects[2]));
+                mapa.put("foto",link2+"/"+objects[0]);
                 mapa.put("latitud",(double)objects[3]);
                 mapa.put("longitud",(double)objects[4]);
                 respuesta.add(mapa);
@@ -250,6 +265,11 @@ public class ControladorEmpresa {
         }else{
             throw new DataNotFoundException();
         }
+    }
+    @GetMapping("/getnombre/{nombre}")
+    public boolean existeEmpresa(@PathVariable(value = "nombre")String Nombre){
+        Integer clave=empresaRepositorio.findByNombre2(Nombre);
+        return clave != null;
     }
     @GetMapping("/getPedidos/idEmpresa/{id_empresa}")
     public List<Pedido> getPedidos(@PathVariable(value = "id_empresa")Integer idEmpresa){
@@ -265,33 +285,69 @@ public class ControladorEmpresa {
     }
 
     @GetMapping("/getAllE")
-    public List<Empresa> getEmpresaTodas(){
+    public List<HashMap<String,Object>> getEmpresaTodas(){
         List<Empresa> empresas = empresaRepositorio.findAll();
+        List<HashMap<String,Object>> respuesta=new ArrayList<>();
         if(empresas!=null){
-            for (Empresa empresa : empresas) {
-                empresa.setFoto(byteOperation.decompressBytes(empresa.getFoto()));
+            for (Empresa em : empresas) {
+
+                HashMap<String,Object> mapa=new HashMap<>();
+                mapa.put("id_empresa",em.getIdEmpresa());
+                mapa.put("nombre",em.getNombre());
+                mapa.put("direccion",em.getDireccion());
+                mapa.put("telefono",em.getTelefono());
+                mapa.put("correo",em.getCorreo());
+                mapa.put("latitud",em.getLatitud());
+                mapa.put("longitud",em.getLongitud());
+                mapa.put("foto",link2+"/"+em.getIdEmpresa());
+                mapa.put("facebook",em.getFacebook());
+                mapa.put("twitter",em.getTwitter());
+                mapa.put("instagram",em.getInstagram());
+                mapa.put("categoria",em.getCategoria().getNombre());
+                respuesta.add(mapa);
             }
-            return empresas;
+            return respuesta;
         }else{
             throw new DataNotFoundException();
         }
+    }
+    @GetMapping("/admin/")
+    public HashMap<String,Object> getByAdmin(Authentication authentication){
+        Map<String,Claim> user = (Map<String, Claim>) authentication.getPrincipal();
+        String idAdmin=user.get("sub").asString();
+        HashMap<String,Object> mapa=new HashMap<>();
+        if(user.get("admin").asBoolean()){
+            List<Object[]> em=empresaRepositorio.findbyAdmin(idAdmin);
+            Object[] objects=em.get(0);
+
+            mapa.put("id_empresa",objects[0]);
+            mapa.put("nombre",objects[1]);
+            mapa.put("facebook",objects[2]);
+            mapa.put("twitter",objects[3]);
+            mapa.put("instagram",objects[4]);
+            return mapa;
+        }
+        mapa.put("error","prohibido");
+        return mapa;
+
     }
 
     @GetMapping("/categoria/{categoria}/{actual}/{cantidadmaxima}")
     public List<HashMap<String,Object>> getEmpresaCategoria(@PathVariable(value = "categoria")int categoria,@PathVariable(value = "actual")int actual,@PathVariable(value = "cantidadmaxima")int cantidadmaxima) throws DataNotFoundException{
         List<Object[]> empresas = empresaRepositorio.findByCategoria(categoria);
         List<HashMap<String,Object>> respuestas=new ArrayList<>();
-        if(cantidadmaxima>empresas.size()){
-            cantidadmaxima=empresas.size();
+        int max=cantidadmaxima+actual;
+        if(max>=empresas.size()){
+            max=empresas.size();
         }
         if(empresas!=null){
-            for (int i=actual;i<cantidadmaxima;i++) {
+            for (int i=actual;i<max;i++) {
                 HashMap<String,Object> mapa= new HashMap<>();
                 Object[] objects=empresas.get(i);
                 mapa.put("id_empresa",objects[0]);
                 mapa.put("nombre",objects[1]);
                 mapa.put("correo",objects[2]);
-                mapa.put("foto",byteOperation.decompressBytes((byte[])objects[3]));
+                mapa.put("foto",link2+"/"+objects[0]);
                 respuestas.add(mapa);
 
             }
@@ -360,10 +416,33 @@ public class ControladorEmpresa {
         empresaRepositorio.deleteById(idEmpresa);
     }
     @PostMapping(path = "/image/{id}")
-    public Empresa guardarFoto(@RequestParam(value = "fileImage") MultipartFile file, @PathVariable(value = "id") Integer id) throws IOException {
-        Empresa empresa = empresaRepositorio.findById(id).get();
-        empresa.setFoto(byteOperation.compressBytes(file.getBytes()));
-        return empresaRepositorio.save(empresa);
+    public HashMap<String,Object> guardarFoto(@RequestParam(value = "fileImage") MultipartFile file, @PathVariable(value = "id") Integer id) throws IOException {
+        Empresa em = empresaRepositorio.findById(id).get();
+        HashMap<String,Object> mapa=new HashMap<>();
+        mapa.put("id_empresa",em.getIdEmpresa());
+        mapa.put("nombre",em.getNombre());
+        mapa.put("direccion",em.getDireccion());
+        mapa.put("telefono",em.getTelefono());
+        mapa.put("correo",em.getCorreo());
+        mapa.put("latitud",em.getLatitud());
+        mapa.put("longitud",em.getLongitud());
+        mapa.put("foto",link2+"/"+em.getIdEmpresa());
+        mapa.put("facebook",em.getFacebook());
+        mapa.put("twitter",em.getTwitter());
+        mapa.put("instagram",em.getInstagram());
+        mapa.put("categoria",em.getCategoria().getNombre());
+        return mapa;
+    }
+    @GetMapping("/image/{id_empresa}")
+    @ResponseBody
+    public HttpEntity<byte[]> getPhoto(@PathVariable(value = "id_empresa") Integer idEmpresa) throws IOException {
+        Empresa empresa=empresaRepositorio.findById(idEmpresa).get();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        byte[] image = ByteOperation.decompressBytes(empresa.getFoto());
+        headers.setContentLength(image.length);
+        return new HttpEntity<>(image,headers);
+
     }
 
     @GetMapping("/image/{id_empresa}")
