@@ -315,7 +315,7 @@ public class ControladorEmpresa {
             cantidadmaxima=empresas.size();
         }
         if(empresas!=null){
-            for (int i=actual;i<cantidadmaxima;i++) {
+            for (int i=actual;i<actual+cantidadmaxima;i++) {
                 HashMap<String,Object> mapa= new HashMap<>();
                 Object[] objects=empresas.get(i);
                 mapa.put("id_empresa",objects[0]);

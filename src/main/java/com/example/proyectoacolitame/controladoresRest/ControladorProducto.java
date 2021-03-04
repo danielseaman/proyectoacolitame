@@ -148,7 +148,7 @@ public class ControladorProducto {
         if(cantidadmaxima<productos.size()){
             cantidadmaxima=productos.size();
         }
-        for (int i=actual;i<cantidadmaxima;i++) {
+        for (int i=actual;i<actual+cantidadmaxima;i++) {
             HashMap<String, Object> mapa = new HashMap<>();
             Object[] objects = productos.get(i);
             mapa.put("id_producto", objects[0]);
@@ -169,7 +169,7 @@ public class ControladorProducto {
         if(cantidadmaxima>productos.size()){
             cantidadmaxima=productos.size();
         }
-        for (int i=actual;i<cantidadmaxima;i++) {
+        for (int i=actual;i<actual+cantidadmaxima;i++) {
             HashMap<String, Object> mapa = new HashMap<>();
             Object[] objects = productos.get(i);
             mapa.put("id_producto", objects[0]);
