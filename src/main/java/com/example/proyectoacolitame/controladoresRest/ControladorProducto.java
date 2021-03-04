@@ -53,7 +53,8 @@ public class ControladorProducto {
 
         return mapa;
     }
-    @PutMapping("/actualizar/idProducto/{id_producto}")
+
+    @PostMapping("/actualizar/idProducto/{id_producto}")
     public HashMap<String,Object> actualizar(@RequestBody Map<String, Object> mapJson,@PathVariable(value = "id_producto")Integer idproducto){
         Producto producto = productoRepositorio.findById(idproducto).get();
         producto.setNombre(mapJson.get("nombre").toString());
@@ -73,7 +74,7 @@ public class ControladorProducto {
         productoRepositorio.save(producto);
         return mapa;
     }
-    @DeleteMapping("/borrar/idProducto/{id_producto}")
+    @PostMapping("/borrar/idProducto/{id_producto}")
     public String borrar(@PathVariable(value = "id_producto")Integer id){
         productoRepositorio.deleteById(id);
         return "done";
@@ -99,10 +100,12 @@ public class ControladorProducto {
 
 
     }
-    @PutMapping(path = "/image/{id}")
+    @PostMapping(path = "/image/{id}")
     public HashMap<String,Object> guardarFoto(@RequestParam(value = "fileImage") MultipartFile file, @PathVariable(value = "id") Integer id) throws IOException {
         Producto producto = productoRepositorio.findById(id).get();
+       // System.out.println("Here " + file.getBytes());
         producto.setFoto(byteOperation.compressBytes(file.getBytes()));
+        productoRepositorio.save(producto);
         HashMap<String,Object> mapa=new HashMap<>();
         mapa.put("id_producto",producto.getIdProducto());
         mapa.put("nombre",producto.getNombre());
@@ -112,6 +115,7 @@ public class ControladorProducto {
         mapa.put("id_empresa", producto.getEmpresa().getIdEmpresa());
         mapa.put("nombreEmpresa", producto.getEmpresa().getNombre());
         mapa.put("fotoEmpresa",link2+"/"+producto.getEmpresa().getIdEmpresa());
+        //mapa.put("test", file.getBytes());
         return mapa;
     }
     @GetMapping("/nombre/{nombre}")

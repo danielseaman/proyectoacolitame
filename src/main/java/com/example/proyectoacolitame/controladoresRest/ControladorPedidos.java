@@ -68,7 +68,7 @@ public class ControladorPedidos {
         return pedidosRepositorio.save(pedido);
 
     }
-    @DeleteMapping("/borrarCarro/{id_pedido}")
+    @PostMapping("/borrarCarro/{id_pedido}")
     public void eliminarPedido(@PathVariable(value = "id_pedido")Integer idPedido,Authentication authentication){
         Map<String, Claim> user = (Map<String, Claim>) authentication.getPrincipal();
         Pedido pedido=pedidosRepositorio.findById(idPedido).get();
@@ -76,7 +76,7 @@ public class ControladorPedidos {
             pedidosRepositorio.deleteById(idPedido);
         }
     }
-    @PutMapping("/realizarPedido")
+    @PostMapping("/realizarPedido")
     public List<Pedido> realizarPedido(@RequestBody Map<String, Object> mapJson,Authentication authentication){
         Map<String, Claim> user = (Map<String, Claim>) authentication.getPrincipal();
         //int idusuario=user.get("sub").asInt();
@@ -109,7 +109,7 @@ public class ControladorPedidos {
     }
 
 
-    @GetMapping("/getCarrito/{id_usuario}")
+    @GetMapping("/getCarrito")
     public List<Map<String,Object>>getPedidos(Authentication authentication){
         Map<String, Claim> user = (Map<String, Claim>) authentication.getPrincipal();
         String idUsuario=user.get("sub").asString();

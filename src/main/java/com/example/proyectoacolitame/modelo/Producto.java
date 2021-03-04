@@ -12,7 +12,7 @@ public class Producto {
     @Id
     @Column(name = "id_producto")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int idProducto;
+    private int id_producto;
     @Column(name = "nombre")
     private String nombre;
     @Column(name = "descripcion")
@@ -31,11 +31,11 @@ public class Producto {
     private List<Pedido> pedidos;
 
     public int getIdProducto() {
-        return idProducto;
+        return id_producto;
     }
 
-    public void setIdProducto(int idProducto) {
-        this.idProducto = idProducto;
+    public void setIdProducto(int id_producto) {
+        this.id_producto = id_producto;
     }
 
     public String getNombre() {
