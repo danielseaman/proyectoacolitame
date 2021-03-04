@@ -266,6 +266,11 @@ public class ControladorEmpresa {
             throw new DataNotFoundException();
         }
     }
+    @GetMapping("/getnombre/{nombre}")
+    public boolean existeEmpresa(@PathVariable(value = "nombre")String Nombre){
+        Integer clave=empresaRepositorio.findByNombre2(Nombre);
+        return clave != null;
+    }
     @GetMapping("/getPedidos/idEmpresa/{id_empresa}")
     public List<Pedido> getPedidos(@PathVariable(value = "id_empresa")Integer idEmpresa){
         return pedidosRepositorio.findByRevisadoAndEmpresa(idEmpresa);
