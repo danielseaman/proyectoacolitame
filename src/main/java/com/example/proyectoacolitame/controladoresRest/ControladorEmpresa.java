@@ -72,7 +72,7 @@ public class ControladorEmpresa {
         String adminId = user.get("sub").asString();
         Empresa empresa = new Empresa();
         empresa= setDatos(mapJson, empresa);
-        empresaRepositorio.save(empresa);
+        empresa = empresaRepositorio.save(empresa);
 //        String adminId =
 //        return empresaRepositorio.save(empresa);
         System.out.printf("{\"idempresa\":"+empresa.getIdEmpresa()+",\"adminid\":\""+adminId+"\"}");
@@ -418,6 +418,8 @@ public class ControladorEmpresa {
     @PostMapping(path = "/image/{id}")
     public HashMap<String,Object> guardarFoto(@RequestParam(value = "fileImage") MultipartFile file, @PathVariable(value = "id") Integer id) throws IOException {
         Empresa em = empresaRepositorio.findById(id).get();
+        em.setFoto(ByteOperation.compressBytes(file.getBytes()));
+        empresaRepositorio.save(em);
         HashMap<String,Object> mapa=new HashMap<>();
         mapa.put("id_empresa",em.getIdEmpresa());
         mapa.put("nombre",em.getNombre());
@@ -433,17 +435,17 @@ public class ControladorEmpresa {
         mapa.put("categoria",em.getCategoria().getNombre());
         return mapa;
     }
-    @GetMapping("/image/{id_empresa}")
-    @ResponseBody
-    public HttpEntity<byte[]> getPhoto(@PathVariable(value = "id_empresa") Integer idEmpresa) throws IOException {
-        Empresa empresa=empresaRepositorio.findById(idEmpresa).get();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_JPEG);
-        byte[] image = ByteOperation.decompressBytes(empresa.getFoto());
-        headers.setContentLength(image.length);
-        return new HttpEntity<>(image,headers);
-
-    }
+//    @GetMapping("/image/{id_empresa}")
+//    @ResponseBody
+//    public HttpEntity<byte[]> getPhoto(@PathVariable(value = "id_empresa") Integer idEmpresa) throws IOException {
+//        Empresa empresa=empresaRepositorio.findById(idEmpresa).get();
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.IMAGE_JPEG);
+//        byte[] image = ByteOperation.decompressBytes(empresa.getFoto());
+//        headers.setContentLength(image.length);
+//        return new HttpEntity<>(image,headers);
+//
+//    }
 
     @GetMapping("/image/{id_empresa}")
     @ResponseBody
