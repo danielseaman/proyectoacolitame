@@ -17,7 +17,8 @@ public class AdministradorEmpresa {
     private String idAdministrador;
     @Column(name = "correo")
     private String correo;
-
+    @Column(name= "principal")
+    private Boolean principal;
 
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "id_empresa")
@@ -44,8 +45,13 @@ public class AdministradorEmpresa {
         this.correo = correo;
     }
 
+    public Boolean getPrincipal() {
+        return principal;
+    }
 
-
+    public void setPrincipal(Boolean principal) {
+        this.principal = principal;
+    }
 
     public Empresa getEmpresa() {
         return empresa;
