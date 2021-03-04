@@ -306,6 +306,26 @@ public class ControladorEmpresa {
             throw new DataNotFoundException();
         }
     }
+    @GetMapping("/admin/")
+    public HashMap<String,Object> getByAdmin(Authentication authentication){
+        Map<String,Claim> user = (Map<String, Claim>) authentication.getPrincipal();
+        String idAdmin=user.get("sub").asString();
+        HashMap<String,Object> mapa=new HashMap<>();
+        if(user.get("admin").asBoolean()){
+            List<Object[]> em=empresaRepositorio.findbyAdmin(idAdmin);
+            Object[] objects=em.get(0);
+
+            mapa.put("id_empresa",objects[0]);
+            mapa.put("nombre",objects[1]);
+            mapa.put("facebook",objects[2]);
+            mapa.put("twitter",objects[3]);
+            mapa.put("instagram",objects[4]);
+            return mapa;
+        }
+        mapa.put("error","prohibido");
+        return mapa;
+
+    }
 
     @GetMapping("/categoria/{categoria}/{actual}/{cantidadmaxima}")
     public List<HashMap<String,Object>> getEmpresaCategoria(@PathVariable(value = "categoria")int categoria,@PathVariable(value = "actual")int actual,@PathVariable(value = "cantidadmaxima")int cantidadmaxima) throws DataNotFoundException{
