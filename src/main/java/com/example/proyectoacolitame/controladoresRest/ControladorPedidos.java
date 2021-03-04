@@ -35,7 +35,7 @@ public class ControladorPedidos {
 
     ByteOperation byteOperation = new ByteOperation();
     @PostMapping("/insertarCarrito")
-    public Pedido guardarCarritoCompras(@RequestBody Map<String, Object> mapJson, Authentication authentication){
+    public HashMap<String, Object> guardarCarritoCompras(@RequestBody Map<String, Object> mapJson, Authentication authentication){
         Map<String, Claim> user = (Map<String, Claim>) authentication.getPrincipal();
         String idusuario=user.get("sub").asString();
 
@@ -65,7 +65,21 @@ public class ControladorPedidos {
             }
         }
 
-        return pedidosRepositorio.save(pedido);
+        pedido=pedidosRepositorio.save(pedido);
+        HashMap<String, Object> mapa = new HashMap<>();
+
+        mapa.put("id_pedido", pedido.getIdPedido());
+        mapa.put("mensaje", pedido.getMensaje());
+
+        mapa.put("fecha",pedido.getFecha());
+        mapa.put("id_empresa", pedido.getEmpresa().getIdEmpresa());
+        mapa.put("nombre_empresa",pedido.getEmpresa().getNombre());
+        mapa.put("id_producto",pedido.getProducto().getIdProducto());
+        mapa.put("nombre_producto",pedido.getProducto().getNombre());
+        mapa.put("precio",pedido.getProducto().getPrecio());
+        mapa.put("foto","http://localhost:8080/producto/image/"+pedido.getProducto().getIdProducto());
+
+        return mapa;
 
     }
     @PostMapping("/borrarCarro/{id_pedido}")
