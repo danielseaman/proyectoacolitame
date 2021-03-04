@@ -14,6 +14,9 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -52,9 +55,9 @@ public class ControladorEmpresa {
         double longitud=(double)mapJson.get("longitud");
         empresa.setLatitud(latitud);
         empresa.setLongitud(longitud);
-        AdministradorEmpresa administradorEmpresa= new AdministradorEmpresa();
+        AdministradorEmpresa administradorEmpresa= administradorRepositorio.findByCorreo(mapJson.get("correoAdmin").toString());
         //administradorEmpresa.setClave(mapJson.get("claveAdmin").toString());//hay que hashear
-        administradorEmpresa.setCorreo(mapJson.get("correoAdmin").toString());
+//        administradorEmpresa.setCorreo(mapJson.get("correoAdmin").toString());
         administradorRepositorio.save(administradorEmpresa);
         empresa.setCategoria(categoriaRepositorio.findByNombre(mapJson.get("categoria").toString()));
         return empresa;
@@ -345,8 +348,9 @@ public class ControladorEmpresa {
         return empresa;
     }
 
-    @PutMapping("/actualizar/idEmpresa/{id_empresa}")
+    @PostMapping("/actualizar/idEmpresa/{id_empresa}") //Because cors policy :'(
     public Empresa actualizar(@RequestBody Map<String,Object> mapJson, @PathVariable(value = "id_empresa")Integer idEmpresa){
+        System.out.printf("testing  ");
         Empresa empresa = empresaRepositorio.findById(idEmpresa).get();
         empresa=setDatos(mapJson, empresa);
         return empresaRepositorio.save(empresa);
@@ -360,5 +364,19 @@ public class ControladorEmpresa {
         Empresa empresa = empresaRepositorio.findById(id).get();
         empresa.setFoto(byteOperation.compressBytes(file.getBytes()));
         return empresaRepositorio.save(empresa);
+    }
+
+    @GetMapping("/image/{id_empresa}")
+    @ResponseBody
+    public HttpEntity<byte[]> getPhoto(@PathVariable(value = "id_empresa") Integer idEmpresa) throws IOException {
+        Empresa empresa = empresaRepositorio.findById(idEmpresa).get();
+        //byte[] image = FileUtil.readAsByteArray(new File("C:/Users/david/Downloads/WhatsApp Image 2020-07-18 at 17.37.13.jpeg"));
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        //headers.setContentLength(image.length);
+        byte[] image = ByteOperation.decompressBytes(empresa.getFoto());
+        headers.setContentLength(image.length);
+        return new HttpEntity<>(image,headers);
+        //return new HttpEntity<>(image,headers);
     }
 }

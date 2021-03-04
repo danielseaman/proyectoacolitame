@@ -1,6 +1,7 @@
 package com.example.proyectoacolitame.controladoresRest;
 
 import com.example.proyectoacolitame.exceptions.DataNotFoundException;
+import com.example.proyectoacolitame.modelo.Empresa;
 import com.example.proyectoacolitame.modelo.Producto;
 import com.example.proyectoacolitame.repositorio.ComentarioRepositorio;
 import com.example.proyectoacolitame.repositorio.EmpresaRepositorio;
