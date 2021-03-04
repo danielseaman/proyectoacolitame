@@ -145,7 +145,7 @@ public class ControladorProducto {
     public List<HashMap<String,Object>> getByCategoria(@PathVariable(value = "categoria")int categoria,@PathVariable(value = "actual")int actual,@PathVariable(value = "cantidadmaxima")int cantidadmaxima){
         List<Object[]> productos=productoRepositorio.findByCategoria(categoria);
         List<HashMap<String,Object>> respuesta=new ArrayList<>();
-        if(actual+cantidadmaxima<productos.size()){
+        if(actual+cantidadmaxima>productos.size()){
             cantidadmaxima=productos.size();
         }
         for (int i=actual;i<cantidadmaxima;i++) {
