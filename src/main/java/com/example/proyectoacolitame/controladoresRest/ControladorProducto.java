@@ -147,7 +147,7 @@ public class ControladorProducto {
         List<HashMap<String,Object>> respuesta=new ArrayList<>();
 
         int max=cantidadmaxima+actual;
-        if(max>productos.size()){
+        if(max>=productos.size()){
             max=productos.size();
         }
         for (int i=actual;i<max;i++) {

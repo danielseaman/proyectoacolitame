@@ -84,7 +84,7 @@ public class ControladorComentarios {
         List<Map<String,Object>> json=new ArrayList<>();
         List<Comentario> comentarios=comentarioRepositorio.findByEmpresa(idEmpresa);
         int max=cantidadmaxima+actual;
-        if(max>comentarios.size()){
+        if(max>=comentarios.size()){
             max=comentarios.size();
         }
         for(int i=actual;i<max;i++){

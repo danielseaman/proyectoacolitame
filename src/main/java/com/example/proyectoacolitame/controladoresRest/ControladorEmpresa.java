@@ -332,7 +332,7 @@ public class ControladorEmpresa {
         List<Object[]> empresas = empresaRepositorio.findByCategoria(categoria);
         List<HashMap<String,Object>> respuestas=new ArrayList<>();
         int max=cantidadmaxima+actual;
-        if(max>empresas.size()){
+        if(max>=empresas.size()){
             max=empresas.size();
         }
         if(empresas!=null){
