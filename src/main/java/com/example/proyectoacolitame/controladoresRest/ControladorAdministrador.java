@@ -57,6 +57,25 @@ public class ControladorAdministrador {
         }
        return true;
     }
+    @DeleteMapping("/borrar")
+    public boolean eliminar(@RequestBody Map<String, Object> mapJson, Authentication authentication){
+        Map<String, Claim> user = (Map<String, Claim>) authentication.getPrincipal();
+        //String idAdministrador=user.get("sub").asString();
+        boolean admin=user.get("admin").asBoolean();
+        int idEmpresa=Integer.parseInt((String) mapJson.get("id_empresa"));
+        String correoEliminar=mapJson.get("correo")+"";
+        AdministradorEmpresa administradorEmpresa=administradorRepositorio.findByCorreo(correoEliminar);
+        if(admin){
+            if(idEmpresa==administradorEmpresa.getEmpresa().getIdEmpresa()){
+                administradorRepositorio.delete(administradorEmpresa);
+                return true;
+            }else{
+                throw new DataNotFoundException();
+            }
+        }else {
+            return false;
+        }
+    }
 
     @GetMapping("/alla/{id}")
     public List<Map<String, Object>> getAll(@PathVariable(value = "id") Integer id, Authentication authentication){
