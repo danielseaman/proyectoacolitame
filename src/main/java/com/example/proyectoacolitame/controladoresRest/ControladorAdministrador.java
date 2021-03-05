@@ -16,6 +16,7 @@ import java.util.Map;
 @RequestMapping("/administrador")
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET,RequestMethod.DELETE,RequestMethod.PUT, RequestMethod.POST})
 public class ControladorAdministrador {
+    String link="http://localhost:8080/verificacion/?num=";
     @Autowired
     AdministradorRepositorio administradorRepositorio;
     @Autowired
@@ -39,6 +40,9 @@ public class ControladorAdministrador {
                         administradorEmpresa1.setPrincipal(false);
                         administradorEmpresa1.setCorreo(correoNuevoAdmin);
                         administradorRepositorio.save(administradorEmpresa1);
+                        String body="Siga el link para verificar su cuenta: "+link+administradorEmpresa.getEmpresa().getIdEmpresa();
+                        EnviarCorreo enviarCorreo=new EnviarCorreo();
+                        enviarCorreo.crearCorreo(correoNuevoAdmin,body,"Verificación");
                     }
                 }else{
                     return false;
