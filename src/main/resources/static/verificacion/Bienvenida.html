@@ -3,8 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <title>Bienvenido</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
 </head>
 <body>
-    <h1>Bienvenido</h1>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="home">Showcase project</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav ml-auto">
+
+        </ul>
+    </div>
+</nav>
+<div class="jumbotron m-5">
+
+    <div class="row justify-content-center ">
+
+        <div class="col-sm-4 col-sm-auto col-md-auto">
+            <div class="row align-items-center justify-content-center my-5">
+                <div class="col-sm-auto">
+                    <div class="row align-items-center justify-content-center mb-3" >
+                        <img id="imagen" src="https://via.placeholder.com/150" alt="Tu imagen" style="width: 250px;
+                                    height: 250px;"/>
+
+                        <br>
+
+                    </div>
+                    <div class="row align-items-center justify-content-center mb-3" >
+                        <input type="file"  id="imgInp" hidden/>
+                        <button type="button" class="btn btn-info" id="cargarfoto" >Editar Foto</button>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row align-items-center justify-content-center mb-5">
+                <div class="container-sm-1 "></div>
+                <div class="container-sm-2 p-3 my-3 border" id="forSuscripcion">
+
+                </div>
+                <div class="container-sm-1 "></div>
+            </div>
+            <div class="row align-items-center justify-content-center">
+                <div class="col-auto col-md-auto ">
+                    <button type="button" class="btn btn-danger" onclick="cancelarSubs()">Cancelar</button>
+                </div>
+                <div id="forModalCloseS">
+
+                </div>
+                <div class="col-auto col-md-auto ">
+                    <button type="button" class="btn btn-success" onclick="renovar()">Renovar</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-sm-6 pt-5 pl-5 col-sm-auto col-md-auto">
+            <p>Empresa</p>
+            <!--Insertar el nombre de la empresa-->
+            <p>
+            <h2 id="nombreEmpresaTitulo"></h2>
+            </p>
+            <p>Datos de la empresa</p>
+            <form id="formEmpresa">
+                <div class="form-group">
+                    <label>Nombre:</label>
+                    <input type="text" class="form-control" id="nombre" style="border: 1px solid black;" required >
+                    <!--Insertar el nombre de la empresa-->
+                </div>
+                <div class="form-group">
+                    <label>Correo Electronico:</label>
+                    <input type="text" class="form-control" id="correo" style="border: 1px solid black;" required>
+                    <!--Insertar el correo de la empresa-->
+                </div>
+                <div class="form-group">
+                    <label>Telefono:</label>
+                    <input type="text" class="form-control" id="telefono" style="border: 1px solid black;" required>
+                    <!--Insertar el telefono de la empresa-->
+                </div>
+
+                <div class="form-group">
+                    <label>Direccion:</label>
+                    <input type="text" class="form-control" id="direccion" style="border: 1px solid black;" readonly>
+                    <input type="text" class="form-control" id="latitud" style="border: 1px solid black;" hidden>
+                    <input type="text" class="form-control" id="longitud" style="border: 1px solid black;" hidden>
+                </div>
+                <p>Elija su nueva ubicacion en el mapa</p>
+                <div class="row align-items-center justify-content-center">
+
+                    <div class="col-sm-auto col-auto col-md-auto" >
+                        <iframe src="forChoose" id="frameUbicacion" width="500" height="500" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+
+                    </div>
+                </div>
+
+                <label>Categoria:</label>
+                <div class="row mb-5">
+                    <div class="col-sm-auto">
+                        <div class="row pb-5 pl-4">
+
+                            <div class="form-group" >
+                                <select class="form-control btn-outline-primary" id="selectCategorias" >
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row align-items-center justify-content-center pb-5">
+                    <div class="col-auto col-md-auto pb-3">
+                        <button type="button" class="btn btn-info" onclick="javascript:window.location.href = 'DespliegueEmpresaParaEmpresario'">Ir a mi Vitrina</button>
+                    </div>
+                    <div class="col-auto col-md-auto pb-3">
+                        <button type="button" class="btn btn-info" onclick="guardar()">Guardar Cambios</button>
+                    </div>
+                    <div class="col-auto col-md-auto pb-3">
+                        <input type="button" class="btn btn-info" onclick="javascript:window.open('administradores','','width=900,height=600,left=50,top=50,toolbar=yes');" value="Administradores"></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+</div>
+<div class="container-expand">
+    <footer class="page-footer font-small pt-1 jumbotron ">
+        <div class="row align-items-center justify-content-center ">
+            <div class="col-md-auto px-0 ">
+                <img src="./img/logoU.png" alt=" " class="img-responsive " height="300 " width="850 ">
+            </div>
+
+        </div>
+        <div class="footer-copyright text-center pt-1">© 2020 Copyright:
+            <p href="https://mdbootstrap.com/"> Showcase Project</p>
+        </div>
+    </footer>
+</div>
+
 </body>
 </html>

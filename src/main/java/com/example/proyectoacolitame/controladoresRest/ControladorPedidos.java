@@ -143,7 +143,7 @@ public class ControladorPedidos {
                 pedidocompleto.put("nombre", producto.getNombre());
                 pedidocompleto.put("precio", producto.getPrecio());
                 pedidocompleto.put("descripcion", producto.getDescripcion());
-                pedidocompleto.put("foto", byteOperation.decompressBytes(producto.getFoto()));
+                pedidocompleto.put("foto", "http://localhost:8080/producto/image/"+producto.getIdProducto());
                 respuesta.add(pedidocompleto);
             }
 
