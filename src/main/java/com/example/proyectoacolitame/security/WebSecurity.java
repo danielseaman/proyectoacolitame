@@ -61,16 +61,5 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
         return source;
    }
-   ////esto es una prueba
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/administrador/**").allowedOrigins("*").allowedMethods("GET", "POST","PUT", "DELETE");
 
-
-            }
-        };
-    }
 }

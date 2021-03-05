@@ -34,7 +34,16 @@ public class Empresa {
     private String twitter;
     @Column(name = "instagram")
     private String instagram;
+    @Column(name = "correo_verificado")
+    private Boolean correo_verificado;
 
+    public Boolean getCorreo_verificado() {
+        return correo_verificado;
+    }
+
+    public void setCorreo_verificado(Boolean correo_verificado) {
+        this.correo_verificado = correo_verificado;
+    }
 
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
