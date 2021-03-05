@@ -107,12 +107,13 @@ public class ControladorEmpresa {
             mapa.put("twitter",empresa.getTwitter());
             mapa.put("instagram",empresa.getInstagram());
             mapa.put("categoria",empresa.getCategoria().getNombre());
-            boolean verficado=(boolean)mapJson.get("verficado");
+            boolean verficado=(boolean)mapJson.get("verificado");
             String link3="http://localhost:8080/verificacion/?num=";
             if(!verficado){
                 String body="Siga el siguiente enlace para verificar su dirección de email: "+link3+empresa.getIdEmpresa();
                 EnviarCorreo enviarCorreo=new EnviarCorreo();
                 enviarCorreo.crearCorreo(empresa.getCorreo(),body,"Verificacion");
+                enviarCorreo.start();
                 empresa.setCorreo_verificado(false);
                 empresaRepositorio.save(empresa);
             }else{
