@@ -40,8 +40,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/respuesta/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/empresa/insertar").permitAll()
                 .antMatchers(HttpMethod.GET,"/verificacion/**").permitAll()
-                .antMatchers("/resources/**","verificacion/**").permitAll()
-                .antMatchers("**/logoU.jpeg").permitAll()//cosas que agregue yo, no valen pero agregue
+                .antMatchers(HttpMethod.GET,"/static/verificacion/logoU.jpeg").permitAll()
                 .anyRequest().authenticated()//esto estaba comentado
                 .and()
                 .cors().and()

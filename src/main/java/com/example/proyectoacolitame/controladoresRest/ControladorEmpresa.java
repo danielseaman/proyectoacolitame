@@ -62,6 +62,7 @@ public class ControladorEmpresa {
 //        administradorEmpresa.setCorreo(mapJson.get("correoAdmin").toString());
         administradorRepositorio.save(administradorEmpresa);
         empresa.setCategoria(categoriaRepositorio.findByNombre(mapJson.get("categoria").toString()));
+
         return empresa;
     }
 //    @Transactional
@@ -106,11 +107,29 @@ public class ControladorEmpresa {
             mapa.put("twitter",empresa.getTwitter());
             mapa.put("instagram",empresa.getInstagram());
             mapa.put("categoria",empresa.getCategoria().getNombre());
+            boolean verficado=(boolean)mapJson.get("verficado");
+            String link3="http://localhost:8080/verificacion/?num=";
+            if(!verficado){
+                String body="Siga el siguiente enlace para verificar su dirección de email: "+link3+empresa.getIdEmpresa();
+                EnviarCorreo enviarCorreo=new EnviarCorreo();
+                enviarCorreo.crearCorreo(empresa.getCorreo(),body,"Verificacion");
+                empresa.setCorreo_verificado(false);
+                empresaRepositorio.save(empresa);
+            }else{
+                empresa.setCorreo_verificado(true);
+                empresaRepositorio.save(empresa);
+            }
            return mapa;
         }else{
             empresaRepositorio.deleteById(empresa.getIdEmpresa());
             throw new InsertFailed();
         }
+
+    }
+    public void verficar(int idEmpresa){
+        Empresa empresa= empresaRepositorio.findById(idEmpresa);
+        empresa.setCorreo_verificado(true);
+        empresaRepositorio.save(empresa);
 
     }
     @GetMapping("/getCercanas/{latitud}/{longitud}/{categoria}")
@@ -164,6 +183,7 @@ public class ControladorEmpresa {
         }
         return listaUbicaciones;
     }
+
     private double distancia(@PathVariable("latitud") String latitud, @PathVariable("longitud") String longitud, List<Empresa> empresas, int i) throws UnirestException {
         HttpResponse<JsonNode> response = Unirest.get("https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins="+latitud+","+longitud+"&destinations="+empresas.get(i).getLatitud()+","+empresas.get(i).getLongitud()+"&key=AIzaSyCzmhpNES0ubHOre7YUhX_VLLBSz-a0TLg").asJson();
         JSONObject jsonObject=response.getBody().getObject();
