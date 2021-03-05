@@ -9,7 +9,9 @@ import com.example.proyectoacolitame.repositorio.UsuarioRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import sun.rmi.transport.ObjectTable;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -25,7 +27,7 @@ public class ControladorAdministrador {
         Map<String, Claim> user = (Map<String, Claim>) authentication.getPrincipal();
         String idAdministrador=user.get("sub").asString();
         boolean admin=user.get("admin").asBoolean();
-        int idEmpresa=Integer.parseInt(mapJson.get("id_empresa")+"");
+        int idEmpresa=Integer.parseInt((String) mapJson.get("id_empresa"));
         String correoNuevoAdmin=mapJson.get("correo")+"";
         try{
             if(admin){
@@ -49,7 +51,23 @@ public class ControladorAdministrador {
         }catch (Exception e){
             throw new DataNotFoundException();
         }
-
        return true;
     }
+
+    @GetMapping("/alla/{id}")
+    public List<Map<String, Object>> getAll(@PathVariable(value = "id") Integer id, Authentication authentication){
+        Map<String, Claim> user = (Map<String,Claim>) authentication.getPrincipal();
+        boolean admin = user.get("admin").asBoolean();
+        try{
+            if(admin){
+                return administradorRepositorio.findAllByIdAdministrador(id);
+            }else {
+                return null;
+            }
+        }catch (Exception e){
+            return null;
+        }
+    }
+
+
 }
