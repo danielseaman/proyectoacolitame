@@ -100,10 +100,11 @@ public class ControladorPedidos {
         ArrayList<Integer> arreglo=(ArrayList<Integer>) mapJson.get("idpedidos");
         String mensaje=mapJson.get("mensaje").toString();
         List<Pedido> pedidos = new ArrayList<>();
-        EnviarCorreo enviarCorreo= new EnviarCorreo();
+
 
         //enviar correo a las empresas
         for(int i=0;i<arreglo.size();i++){
+            EnviarCorreo enviarCorreo= new EnviarCorreo();
             Pedido pedido= pedidosRepositorio.findById(arreglo.get(i)).get();
             pedido.setFecha(dft.format(now));
             pedido.setRevisado(false);

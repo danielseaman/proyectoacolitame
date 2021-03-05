@@ -71,64 +71,7 @@
             <h2 id="nombreEmpresaTitulo"></h2>
             </p>
             <p>Datos de la empresa</p>
-            <form id="formEmpresa">
-                <div class="form-group">
-                    <label>Nombre:</label>
-                    <input type="text" class="form-control" id="nombre" style="border: 1px solid black;" required >
-                    <!--Insertar el nombre de la empresa-->
-                </div>
-                <div class="form-group">
-                    <label>Correo Electronico:</label>
-                    <input type="text" class="form-control" id="correo" style="border: 1px solid black;" required>
-                    <!--Insertar el correo de la empresa-->
-                </div>
-                <div class="form-group">
-                    <label>Telefono:</label>
-                    <input type="text" class="form-control" id="telefono" style="border: 1px solid black;" required>
-                    <!--Insertar el telefono de la empresa-->
-                </div>
 
-                <div class="form-group">
-                    <label>Direccion:</label>
-                    <input type="text" class="form-control" id="direccion" style="border: 1px solid black;" readonly>
-                    <input type="text" class="form-control" id="latitud" style="border: 1px solid black;" hidden>
-                    <input type="text" class="form-control" id="longitud" style="border: 1px solid black;" hidden>
-                </div>
-                <p>Elija su nueva ubicacion en el mapa</p>
-                <div class="row align-items-center justify-content-center">
-
-                    <div class="col-sm-auto col-auto col-md-auto" >
-                        <iframe src="forChoose" id="frameUbicacion" width="500" height="500" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-
-                    </div>
-                </div>
-
-                <label>Categoria:</label>
-                <div class="row mb-5">
-                    <div class="col-sm-auto">
-                        <div class="row pb-5 pl-4">
-
-                            <div class="form-group" >
-                                <select class="form-control btn-outline-primary" id="selectCategorias" >
-
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row align-items-center justify-content-center pb-5">
-                    <div class="col-auto col-md-auto pb-3">
-                        <button type="button" class="btn btn-info" onclick="javascript:window.location.href = 'DespliegueEmpresaParaEmpresario'">Ir a mi Vitrina</button>
-                    </div>
-                    <div class="col-auto col-md-auto pb-3">
-                        <button type="button" class="btn btn-info" onclick="guardar()">Guardar Cambios</button>
-                    </div>
-                    <div class="col-auto col-md-auto pb-3">
-                        <input type="button" class="btn btn-info" onclick="javascript:window.open('administradores','','width=900,height=600,left=50,top=50,toolbar=yes');" value="Administradores"></button>
-                    </div>
-                </div>
-            </form>
         </div>
     </div>
 
