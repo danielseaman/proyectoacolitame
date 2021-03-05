@@ -22,8 +22,9 @@ public class Bienvenida {
         System.out.println("holaaaaaaaaaaaaaaaaaaaaaaaa");
         System.out.println("idempresa: "+idempresa);
         System.out.println("hola");
-        ControladorEmpresa controladorEmpresa=new ControladorEmpresa();
-        controladorEmpresa.verficar(idempresa);
+        Empresa empresa= empresaRepositorio.findById(idempresa);
+        empresa.setCorreo_verificado(true);
+        empresaRepositorio.save(empresa);
         return "Bienvenida.html";
 
     }

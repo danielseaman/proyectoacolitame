@@ -45,7 +45,8 @@ public class ControladorEmpresa {
     PedidosRepositorio pedidosRepositorio;
     @Autowired
     ProductoRepositorio productoRepositorio;
-
+    @Autowired
+    static EmpresaRepositorio empresaRepositorioStatic;
 
     ByteOperation byteOperation;
     private Empresa setDatos(@RequestBody Map<String, Object> mapJson, Empresa empresa) {
@@ -127,12 +128,7 @@ public class ControladorEmpresa {
         }
 
     }
-    public void verficar(int idEmpresa){
-        Empresa empresa= empresaRepositorio.findById(idEmpresa);
-        empresa.setCorreo_verificado(true);
-        empresaRepositorio.save(empresa);
 
-    }
     @GetMapping("/getCercanas/{latitud}/{longitud}/{categoria}")
     public List<Map<String,Object>> getCercanasCategoria(@PathVariable(value = "latitud")String latitud,@PathVariable(value = "longitud")String longitud,@PathVariable(value = "categoria")Integer categoria){
         List<Empresa> empresas=empresaRepositorio.findAll();
