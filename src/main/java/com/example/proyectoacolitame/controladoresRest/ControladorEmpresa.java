@@ -460,4 +460,6 @@ public class ControladorEmpresa {
         return new HttpEntity<>(image,headers);
         //return new HttpEntity<>(image,headers);
     }
+
+
 }

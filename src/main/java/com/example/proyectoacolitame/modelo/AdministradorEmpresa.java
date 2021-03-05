@@ -11,8 +11,8 @@ import java.util.List;
 @Table(name = "administrador_empresa")
 public class AdministradorEmpresa {
     @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
+//    @GeneratedValue(generator="system-uuid")
+//    @GenericGenerator(name="system-uuid", strategy = "uuid")
     @Column(name="id_administrador")
     private String idAdministrador;
     @Column(name = "correo")

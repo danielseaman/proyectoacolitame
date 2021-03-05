@@ -11,8 +11,8 @@ import java.util.List;
 @Table(name = "usuario_registrado")
 public class UsuarioRegistrado {
     @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
+//    @GeneratedValue(generator="system-uuid")
+//    @GenericGenerator(name="system-uuid", strategy = "uuid")
     @Column(name = "id_usuario")
     private String idUsuario;
     /*@Column(name = "clave")
