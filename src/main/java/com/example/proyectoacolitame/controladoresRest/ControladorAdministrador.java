@@ -40,9 +40,9 @@ public class ControladorAdministrador {
                         administradorEmpresa1.setPrincipal(false);
                         administradorEmpresa1.setCorreo(correoNuevoAdmin);
                         administradorRepositorio.save(administradorEmpresa1);
-                        String body="Siga el link para verificar su cuenta: "+link+administradorEmpresa.getEmpresa().getIdEmpresa();
+                        /*String body="Siga el link para verificar su cuenta: "+link+administradorEmpresa.getEmpresa().getIdEmpresa();
                         EnviarCorreo enviarCorreo=new EnviarCorreo();
-                        enviarCorreo.crearCorreo(correoNuevoAdmin,body,"Verificación");
+                        enviarCorreo.crearCorreo(correoNuevoAdmin,body,"Verificación");*/
                     }
                 }else{
                     return false;
