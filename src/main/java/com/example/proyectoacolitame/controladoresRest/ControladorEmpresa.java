@@ -330,6 +330,7 @@ public class ControladorEmpresa {
     }
     @GetMapping("/admin/")
     public HashMap<String,Object> getByAdmin(Authentication authentication){
+        System.out.println("Empresa-Admin");
         Map<String,Claim> user = (Map<String, Claim>) authentication.getPrincipal();
         String idAdmin=user.get("sub").asString();
         HashMap<String,Object> mapa=new HashMap<>();
@@ -373,7 +374,7 @@ public class ControladorEmpresa {
             throw new DataNotFoundException();
         }
     }
-    @PutMapping("/insertarRedes")
+    @PostMapping("/insertarRedes")
     public Empresa putredes(@RequestBody Map<String,Object> mapJson){
         Empresa empresa = empresaRepositorio.findById((Integer)mapJson.get("idEmpresa")).get();
         if(!mapJson.get("facebook").toString().equals("")){

@@ -57,8 +57,8 @@ public class ControladorComentarios {
             String mensaje2="Has escrito un comentario";
             enviarCorreo.crearCorreo(correo1,mensaje1,"Comentario");
             EnviarCorreo enviarCorreo2= new EnviarCorreo();
-            enviarCorreo.crearCorreo(correo2,mensaje2,"Comentario");
-            enviarCorreo.start();
+            enviarCorreo2.crearCorreo(correo2,mensaje2,"Comentario");
+            enviarCorreo.   start();
             enviarCorreo2.start();
 
             comentarioRepositorio.save(comentario);

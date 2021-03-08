@@ -118,7 +118,14 @@ public class ControladorPedidos {
 
             enviarCorreo.crearCorreo(correo,body,"Pedido");
             enviarCorreo.start();
-
+            String telefono=pedido.getEmpresa().getTelefono();
+            String producto=pedido.getProducto().getNombre();
+            String mensaje2 ="Su pedido se ha realizado correctamente \n" +
+                    "Chat de whatsapp disponible:  https://wa.me/"+telefono+"?text=Hola%20estoy%20interesado%20en%20el%20producto:%20"+producto +
+                    " \nCorreo de contacto con la empresa: "+pedido.getEmpresa().getCorreo();//no es necesario el + en el codigo de telefono
+            EnviarCorreo enviarCorreo1 = new EnviarCorreo();
+            enviarCorreo1.crearCorreo(pedido.getUsuarioRegistrado().getCorreo(),mensaje2,"Pedido");
+            enviarCorreo1.start();
         }
         return pedidos;
     }

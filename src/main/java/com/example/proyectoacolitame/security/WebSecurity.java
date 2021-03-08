@@ -33,14 +33,15 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.GET,"/categoria/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/empresa/admin/").authenticated()
                 .antMatchers(HttpMethod.GET,"/empresa/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/producto/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/calificacion/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/comentarios/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/respuesta/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/empresa/insertar").permitAll()
-                .antMatchers(HttpMethod.GET,"/verificacion/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/static/verificacion/logoU.svg").permitAll()
+                .antMatchers(HttpMethod.GET,"/verificacion/**").permitAll()
                 .anyRequest().authenticated()//esto estaba comentado
                 .and()
                 .cors().and()
