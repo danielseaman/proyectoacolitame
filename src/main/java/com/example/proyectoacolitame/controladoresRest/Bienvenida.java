@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET})
-@RequestMapping("/verificacion")
+@RequestMapping("/api/verificacion")
 
 public class Bienvenida {
     @Autowired

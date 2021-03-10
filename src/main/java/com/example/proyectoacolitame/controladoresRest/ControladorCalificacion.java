@@ -1,6 +1,7 @@
 package com.example.proyectoacolitame.controladoresRest;
 
 import com.auth0.jwt.interfaces.Claim;
+import com.example.proyectoacolitame.exceptions.DataNotFoundException;
 import com.example.proyectoacolitame.modelo.Calificacion;
 import com.example.proyectoacolitame.repositorio.CalificacionRepositorio;
 import com.example.proyectoacolitame.repositorio.EmpresaRepositorio;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/calificacion")
+@RequestMapping("/api/calificacion")
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET,RequestMethod.DELETE,RequestMethod.PUT, RequestMethod.POST})
 public class ControladorCalificacion {
     @Autowired
@@ -49,6 +50,9 @@ public class ControladorCalificacion {
 
     private int calificacionpromedio(int idEmpresa){
         List<Object> calificacions= calificacionRepositorio.findByEmpresa(idEmpresa);
+        if(calificacions==null){
+            throw new DataNotFoundException();
+        }
         int suma=0;
         for(int i=0;i<calificacions.size();i++){
             suma=suma+(Integer)calificacions.get(i);

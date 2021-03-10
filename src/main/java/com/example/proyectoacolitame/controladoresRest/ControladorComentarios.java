@@ -23,7 +23,7 @@ import java.util.Map;
 import static java.lang.Integer.parseInt;
 
 @RestController
-@RequestMapping("/comentarios")
+@RequestMapping("/api/comentarios")
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET,RequestMethod.DELETE,RequestMethod.PUT, RequestMethod.POST})
 public class ControladorComentarios {
     @Autowired

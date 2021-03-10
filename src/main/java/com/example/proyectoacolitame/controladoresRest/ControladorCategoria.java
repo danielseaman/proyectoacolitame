@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/categoria")
+@RequestMapping("/api/categoria")
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET,RequestMethod.DELETE,RequestMethod.PUT, RequestMethod.POST})
 public class ControladorCategoria {
     @Autowired
@@ -26,8 +26,12 @@ public class ControladorCategoria {
     @PutMapping("/actualizar")
     public Categoria actualizar(@RequestBody Map<String, Object> mapJson){
         Categoria categoria = categoriaRepositorio.findById((Integer)mapJson.get("idCategoria")).get();
-        categoria.setNombre(mapJson.get("nombre").toString());
-        return categoriaRepositorio.save(categoria);
+        if(categoria!=null){
+            categoria.setNombre(mapJson.get("nombre").toString());
+            return categoriaRepositorio.save(categoria);
+        }else
+            throw new DataNotFoundException();
+
     }
     @DeleteMapping("/borrar/{id_categoria}")
     public void borrar(@PathVariable(value = "id_categoria")Integer id){ categoriaRepositorio.deleteById(id);

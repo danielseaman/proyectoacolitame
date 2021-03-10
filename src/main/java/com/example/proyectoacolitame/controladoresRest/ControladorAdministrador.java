@@ -14,10 +14,10 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/administrador")
+@RequestMapping("/api/administrador")
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET,RequestMethod.DELETE,RequestMethod.PUT, RequestMethod.POST})
 public class ControladorAdministrador {
-    String link="http://localhost:8080/verificacion/?num=";
+    //String link="http://localhost/api/verificacion/?num=";
     @Autowired
     AdministradorRepositorio administradorRepositorio;
     @Autowired

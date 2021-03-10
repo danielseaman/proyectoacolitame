@@ -1,6 +1,7 @@
 package com.example.proyectoacolitame.controladoresRest;
 
 import com.auth0.jwt.interfaces.Claim;
+import com.example.proyectoacolitame.exceptions.DataNotFoundException;
 import com.example.proyectoacolitame.exceptions.PedidoExistsCart;
 import com.example.proyectoacolitame.mail.Mail;
 import com.example.proyectoacolitame.modelo.Pedido;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/pedido")
+@RequestMapping("/api/pedido")
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET,RequestMethod.DELETE,RequestMethod.PUT, RequestMethod.POST})
 public class ControladorPedidos {
     @Autowired
@@ -86,9 +87,14 @@ public class ControladorPedidos {
     public void eliminarPedido(@PathVariable(value = "id_pedido")Integer idPedido,Authentication authentication){
         Map<String, Claim> user = (Map<String, Claim>) authentication.getPrincipal();
         Pedido pedido=pedidosRepositorio.findById(idPedido).get();
-        if(pedido.getFecha()==null){
-            pedidosRepositorio.deleteById(idPedido);
+        if (pedido != null) {
+            if(pedido.getFecha()==null){
+                pedidosRepositorio.deleteById(idPedido);
+            }
+        }else{
+            throw new DataNotFoundException();
         }
+
     }
     @PostMapping("/realizarPedido")
     public List<Pedido> realizarPedido(@RequestBody Map<String, Object> mapJson,Authentication authentication){
@@ -105,27 +111,33 @@ public class ControladorPedidos {
         //enviar correo a las empresas
         for(int i=0;i<arreglo.size();i++){
             EnviarCorreo enviarCorreo= new EnviarCorreo();
-            Pedido pedido= pedidosRepositorio.findById(arreglo.get(i)).get();
-            pedido.setFecha(dft.format(now));
-            pedido.setRevisado(false);
-            pedido.setMensaje(mensaje);
-            pedidos.add(pedido);
-            pedidosRepositorio.save(pedido);
-            String correo=pedido.getEmpresa().getCorreo();
-            String body="El usuario: "+pedido.getUsuarioRegistrado().getNombre()+" ha pedido el producto: "+pedido.getProducto().getNombre()+"\n" +
-                    "Mensaje del cliente: "+pedido.getMensaje()+"\n" +
-                    "Contacto con el cliente: "+pedido.getUsuarioRegistrado().getCorreo();
 
-            enviarCorreo.crearCorreo(correo,body,"Pedido");
-            enviarCorreo.start();
-            String telefono=pedido.getEmpresa().getTelefono();
-            String producto=pedido.getProducto().getNombre();
-            String mensaje2 ="Su pedido se ha realizado correctamente \n" +
-                    "Chat de whatsapp disponible:  https://wa.me/"+telefono+"?text=Hola%20estoy%20interesado%20en%20el%20producto:%20"+producto +
-                    " \nCorreo de contacto con la empresa: "+pedido.getEmpresa().getCorreo();//no es necesario el + en el codigo de telefono
-            EnviarCorreo enviarCorreo1 = new EnviarCorreo();
-            enviarCorreo1.crearCorreo(pedido.getUsuarioRegistrado().getCorreo(),mensaje2,"Pedido");
-            enviarCorreo1.start();
+            if(pedidosRepositorio.findById(arreglo.get(i)).isPresent()){
+                Pedido pedido= pedidosRepositorio.findById(arreglo.get(i)).get();
+                pedido.setFecha(dft.format(now));
+                pedido.setRevisado(false);
+                pedido.setMensaje(mensaje);
+                pedidos.add(pedido);
+                pedidosRepositorio.save(pedido);
+                String correo=pedido.getEmpresa().getCorreo();
+                String body="El usuario: "+pedido.getUsuarioRegistrado().getNombre()+" ha pedido el producto: "+pedido.getProducto().getNombre()+"\n" +
+                        "Mensaje del cliente: "+pedido.getMensaje()+"\n" +
+                        "Contacto con el cliente: "+pedido.getUsuarioRegistrado().getCorreo();
+
+                enviarCorreo.crearCorreo(correo,body,"Pedido");
+                enviarCorreo.start();
+                String telefono=pedido.getEmpresa().getTelefono();
+                String producto=pedido.getProducto().getNombre();
+                String mensaje2 ="Su pedido se ha realizado correctamente \n" +
+                        "Chat de whatsapp disponible:  https://wa.me/"+telefono+"?text=Hola%20estoy%20interesado%20en%20el%20producto:%20"+producto +
+                        " \nCorreo de contacto con la empresa: "+pedido.getEmpresa().getCorreo();//no es necesario el + en el codigo de telefono
+                EnviarCorreo enviarCorreo1 = new EnviarCorreo();
+                enviarCorreo1.crearCorreo(pedido.getUsuarioRegistrado().getCorreo(),mensaje2,"Pedido");
+                enviarCorreo1.start();
+            }else{
+                throw new DataNotFoundException();
+            }
+
         }
         return pedidos;
     }

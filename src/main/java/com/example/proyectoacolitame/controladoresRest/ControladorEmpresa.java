@@ -31,10 +31,10 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/empresa")
+@RequestMapping("/api/empresa")
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET,RequestMethod.DELETE,RequestMethod.PUT, RequestMethod.POST})
 public class ControladorEmpresa {
-    private String link2="http://localhost:8080/empresa/image";
+    private String link2="http://localhost/api/empresa/image";
     @Autowired
     EmpresaRepositorio empresaRepositorio;
     @Autowired
@@ -80,7 +80,7 @@ public class ControladorEmpresa {
         System.out.printf("{\"idempresa\":"+empresa.getIdEmpresa()+",\"adminid\":\""+adminId+"\"}");
         boolean resultado;
         try { //Esto actualiza el idEmpresa en la cuenta de admin
-            HttpResponse<JsonNode> response = Unirest.post("http://localhost:3000/auth/updateadmin")
+            HttpResponse<JsonNode> response = Unirest.post("http://localhost/auth/updateadmin")
                     .header("Content-Type", "application/json")
                     .header("Authorization",token)
 //                    .body("[{\"correo\":\""+mapJson.get("correo")+"\",\"idempresa\":\""+empresa.getIdEmpresa()+"\"}]")

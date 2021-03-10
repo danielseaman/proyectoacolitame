@@ -20,11 +20,11 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/producto")
+@RequestMapping("/api/producto")
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET,RequestMethod.DELETE,RequestMethod.PUT, RequestMethod.POST})
 public class ControladorProducto {
-    private String link="http://localhost:8080/producto/image";
-    private String link2="http://localhost:8080/empresa/image";
+    private String link="http://localhost/api/producto/image";
+    private String link2="http://localhost/api/empresa/image";
     @Autowired
     ProductoRepositorio productoRepositorio;
     @Autowired
@@ -57,23 +57,28 @@ public class ControladorProducto {
 
     @PostMapping("/actualizar/idProducto/{id_producto}")
     public HashMap<String,Object> actualizar(@RequestBody Map<String, Object> mapJson,@PathVariable(value = "id_producto")Integer idproducto){
-        Producto producto = productoRepositorio.findById(idproducto).get();
-        producto.setNombre(mapJson.get("nombre").toString());
-        producto.setDescripcion(mapJson.get("descripcion").toString());
-        double precio = Double.parseDouble(mapJson.get("precio").toString());
-        producto.setPrecio(precio);
-        HashMap<String,Object> mapa=new HashMap<>();
-        mapa.put("id_producto",producto.getIdProducto());
-        mapa.put("nombre",producto.getNombre());
-        mapa.put("foto",link+"/"+producto.getIdProducto());
-        mapa.put("precio", producto.getPrecio());
-        mapa.put("descripcion", producto.getDescripcion());
-        mapa.put("id_empresa", producto.getEmpresa().getIdEmpresa());
-        mapa.put("nombreEmpresa", producto.getEmpresa().getNombre());
-        mapa.put("fotoEmpresa",link2+"/"+producto.getEmpresa().getIdEmpresa());
+        if(productoRepositorio.findById(idproducto).isPresent()){
+            Producto producto = productoRepositorio.findById(idproducto).get();
+            producto.setNombre(mapJson.get("nombre").toString());
+            producto.setDescripcion(mapJson.get("descripcion").toString());
+            double precio = Double.parseDouble(mapJson.get("precio").toString());
+            producto.setPrecio(precio);
+            HashMap<String,Object> mapa=new HashMap<>();
+            mapa.put("id_producto",producto.getIdProducto());
+            mapa.put("nombre",producto.getNombre());
+            mapa.put("foto",link+"/"+producto.getIdProducto());
+            mapa.put("precio", producto.getPrecio());
+            mapa.put("descripcion", producto.getDescripcion());
+            mapa.put("id_empresa", producto.getEmpresa().getIdEmpresa());
+            mapa.put("nombreEmpresa", producto.getEmpresa().getNombre());
+            mapa.put("fotoEmpresa",link2+"/"+producto.getEmpresa().getIdEmpresa());
 
-        productoRepositorio.save(producto);
-        return mapa;
+            productoRepositorio.save(producto);
+            return mapa;
+        }else{
+            throw new DataNotFoundException();
+        }
+
     }
     @PostMapping("/borrar/idProducto/{id_producto}")
     public String borrar(@PathVariable(value = "id_producto")Integer id){
@@ -103,21 +108,26 @@ public class ControladorProducto {
     }
     @PostMapping(path = "/image/{id}")
     public HashMap<String,Object> guardarFoto(@RequestParam(value = "fileImage") MultipartFile file, @PathVariable(value = "id") Integer id) throws IOException {
-        Producto producto = productoRepositorio.findById(id).get();
-       // System.out.println("Here " + file.getBytes());
-        producto.setFoto(byteOperation.compressBytes(file.getBytes()));
-        productoRepositorio.save(producto);
-        HashMap<String,Object> mapa=new HashMap<>();
-        mapa.put("id_producto",producto.getIdProducto());
-        mapa.put("nombre",producto.getNombre());
-        mapa.put("foto",link+"/"+producto.getIdProducto());
-        mapa.put("precio", producto.getPrecio());
-        mapa.put("descripcion", producto.getDescripcion());
-        mapa.put("id_empresa", producto.getEmpresa().getIdEmpresa());
-        mapa.put("nombreEmpresa", producto.getEmpresa().getNombre());
-        mapa.put("fotoEmpresa",link2+"/"+producto.getEmpresa().getIdEmpresa());
-        //mapa.put("test", file.getBytes());
-        return mapa;
+        if(productoRepositorio.findById(id).isPresent()){
+            Producto producto = productoRepositorio.findById(id).get();
+            // System.out.println("Here " + file.getBytes());
+            producto.setFoto(byteOperation.compressBytes(file.getBytes()));
+            productoRepositorio.save(producto);
+            HashMap<String,Object> mapa=new HashMap<>();
+            mapa.put("id_producto",producto.getIdProducto());
+            mapa.put("nombre",producto.getNombre());
+            mapa.put("foto",link+"/"+producto.getIdProducto());
+            mapa.put("precio", producto.getPrecio());
+            mapa.put("descripcion", producto.getDescripcion());
+            mapa.put("id_empresa", producto.getEmpresa().getIdEmpresa());
+            mapa.put("nombreEmpresa", producto.getEmpresa().getNombre());
+            mapa.put("fotoEmpresa",link2+"/"+producto.getEmpresa().getIdEmpresa());
+            //mapa.put("test", file.getBytes());
+            return mapa;
+        }else{
+            throw new DataNotFoundException();
+        }
+
     }
     @GetMapping("/nombre/{nombre}")
     public List<HashMap<String,Object>> getByNombre(@PathVariable(value = "nombre")String nombre){
