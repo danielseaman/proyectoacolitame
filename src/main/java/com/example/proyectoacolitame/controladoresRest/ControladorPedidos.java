@@ -127,7 +127,8 @@ public class ControladorPedidos {
                 enviarCorreo.crearCorreo(correo,body,"Pedido");
                 enviarCorreo.start();
                 String telefono=pedido.getEmpresa().getTelefono();
-                String producto=pedido.getProducto().getNombre();
+                String producto=pedido.getProducto().getNombre().replaceAll(" ","%20");
+                System.out.println(producto);
                 String mensaje2 ="Su pedido se ha realizado correctamente \n" +
                         "Chat de whatsapp disponible:  https://wa.me/"+telefono+"?text=Hola%20estoy%20interesado%20en%20el%20producto:%20"+producto +
                         " \nCorreo de contacto con la empresa: "+pedido.getEmpresa().getCorreo();//no es necesario el + en el codigo de telefono
@@ -174,7 +175,8 @@ public class ControladorPedidos {
     public String getChat(@PathVariable(value = "id_pedido")int idpedido){
         Pedido pedido=pedidosRepositorio.findById(idpedido).get();
         String telefono=pedido.getEmpresa().getTelefono();
-        String producto=pedido.getProducto().getNombre();
+        String producto=pedido.getProducto().getNombre().replaceAll(" ","%20");
+        System.out.println(producto);
         return "https://wa.me/"+telefono+"?text=Hola%20estoy%20interesado%20en%20el%20producto:%20"+producto;//no es necesario el +
     }
 
