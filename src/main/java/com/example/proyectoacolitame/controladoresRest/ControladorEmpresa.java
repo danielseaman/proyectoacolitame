@@ -109,7 +109,7 @@ public class ControladorEmpresa {
             mapa.put("instagram",empresa.getInstagram());
             mapa.put("categoria",empresa.getCategoria().getNombre());
             boolean verficado=(boolean)mapJson.get("verificado");
-            String link3="http://localhost:8080/verificacion/?num=";
+            String link3="http://localhost/verificacion/?num=";
             if(!verficado){
                 String body="Siga el siguiente enlace para verificar su dirección de email: "+link3+empresa.getIdEmpresa();
                 EnviarCorreo enviarCorreo=new EnviarCorreo();
