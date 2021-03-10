@@ -78,7 +78,7 @@ public class ControladorPedidos {
         mapa.put("id_producto",pedido.getProducto().getIdProducto());
         mapa.put("nombre_producto",pedido.getProducto().getNombre());
         mapa.put("precio",pedido.getProducto().getPrecio());
-        mapa.put("foto","http://localhost:8080/producto/image/"+pedido.getProducto().getIdProducto());
+        mapa.put("foto","http://localhost/api/producto/image/"+pedido.getProducto().getIdProducto());
 
         return mapa;
 
@@ -163,7 +163,7 @@ public class ControladorPedidos {
                 pedidocompleto.put("nombre", producto.getNombre());
                 pedidocompleto.put("precio", producto.getPrecio());
                 pedidocompleto.put("descripcion", producto.getDescripcion());
-                pedidocompleto.put("foto", "http://localhost:8080/producto/image/"+producto.getIdProducto());
+                pedidocompleto.put("foto", "http://localhost/api/producto/image/"+producto.getIdProducto());
                 respuesta.add(pedidocompleto);
             }
 
