@@ -9,7 +9,7 @@ import com.example.proyectoacolitame.repositorio.UsuarioRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import sun.rmi.transport.ObjectTable;
+//import sun.rmi.transport.ObjectTable;
 
 import java.util.List;
 import java.util.Map;
