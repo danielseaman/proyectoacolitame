@@ -1,4 +1,4 @@
-# proyectoacolitame
+# Proyecto Acolitame
 ## Introducción
 Este es el backend del proyecto acolitam,La lógica relacionada al manejo de las empresas está implementada aquí y fue desarrollada en Spring Boot.La conexión a la base de datos será realizada con la ayuda de JPA. Se tendrá una clase controlador por clase en el modelo. La implementación de la lógica mencionada no incluye registro de usuarios, inicios de sesión y renderización de las diferentes vistas.
 Para los métodos los parámetros de entrada estarán en la url o enviados en formato json de acuerdo a la circunstancias.
