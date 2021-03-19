@@ -6,10 +6,7 @@ import com.example.proyectoacolitame.mail.Mail;
 import com.example.proyectoacolitame.modelo.Comentario;
 import com.example.proyectoacolitame.modelo.Respuesta;
 import com.example.proyectoacolitame.modelo.UsuarioRegistrado;
-import com.example.proyectoacolitame.repositorio.AdministradorRepositorio;
-import com.example.proyectoacolitame.repositorio.ComentarioRepositorio;
-import com.example.proyectoacolitame.repositorio.RespuestaRepositorio;
-import com.example.proyectoacolitame.repositorio.UsuarioRepositorio;
+import com.example.proyectoacolitame.repositorio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +31,8 @@ public class ControladorRespuesta {
     UsuarioRepositorio usuarioRepositorio;
     @Autowired
     AdministradorRepositorio administradorRepositorio;
+    @Autowired
+    EmpresaRepositorio empresaRepositorio;
     @PostMapping("/responder")
     public HashMap<String,Object> responder(@RequestBody Map<String,Object> mapJson, Authentication authentication){
         Map<String, Claim> user = (Map<String, Claim>) authentication.getPrincipal();
@@ -49,19 +48,23 @@ public class ControladorRespuesta {
         respuesta.setFecha(dft.format(now));
         Mail mail=new Mail();
         String correo1=comentarioRepositorio.findById((Integer)mapJson.get("idComentario")).get().getEmpresa().getCorreo();
+        String nombreAutor="";
         //si empresa==null el autor es un usuario sino el autor es empresa entonces usuario==null
         if(esEmpresa){
             //agregaste eso para saber como llega el id de una empresa en una respuesta
-            int idautor2=Integer.parseInt(idautor);
+            Integer idautor2= administradorRepositorio.findById(idautor).get().getEmpresa().getIdEmpresa();
             System.out.println("id empresa autora de comentario: "+idautor2);
-            correoautor=administradorRepositorio.findByEmpresa(idautor2).getCorreo();//pr
+            correoautor=empresaRepositorio.findById(idautor2).get().getCorreo();//pr
+            nombreAutor = empresaRepositorio.findById(idautor2).get().getNombre();
             respuesta.setComentario(comentario);
             respuesta.setEmpresa(comentario.getEmpresa());
+
         }else{
             UsuarioRegistrado usuarioRegistrado =usuarioRepositorio.findById(idautor).get();
             respuesta.setComentario(comentario);
             respuesta.setUsuarioRegistrado(usuarioRegistrado);
             correoautor = usuarioRegistrado.getCorreo();
+            nombreAutor = usuarioRegistrado.getNombre();
             System.out.println(correoautor);
         }
         String body1="El usuario "+correoautor+" ha escrito una respuesta en tu empresa";
@@ -77,9 +80,10 @@ public class ControladorRespuesta {
         respuesta2.put("contenido",respuesta.getContenido());
         respuesta2.put("fecha",respuesta.getFecha());
         respuesta2.put("idComentario",respuesta.getIdRespuesta());
-        respuesta2.put("autor", respuestaRepositorio.findById(respuesta.getIdRespuesta()).get().getUsuarioRegistrado().getNombre());
+        respuesta2.put("autor", nombreAutor);
         return respuesta2;
     }
+
     @GetMapping("/getAutor/{id_respuesta}")
     public Map<String,String> getautor(@PathVariable(value = "id_respuesta")Integer idRespuesta){
         Respuesta respuesta=respuestaRepositorio.findById(idRespuesta).get();
